@@ -22,7 +22,7 @@ function IntegrationsIndex() {
           <SectionItem
             aside={
               <div className="p-[8px]">
-                <WhatsAppOutlined style={{ fontSize: "24px", color: "#25D366" }} />
+                <WhatsAppOutlined style={{ fontSize: "24px", color: "var(--foreground)" }} />
               </div>
             }
             title="WhatsApp"

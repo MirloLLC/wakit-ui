@@ -599,7 +599,7 @@ export default function ChatFooter() {
         {/* Send button */}
         <button
           disabled={templateDraft ? !allVarsFilled : !inCSWindow}
-          className={"p-[8px] rounded-full bg-primary disabled:opacity-50" + (templateDraft ? (allVarsFilled ? " cursor-pointer" : "") : !inCSWindow ? "" : " cursor-pointer")}
+          className={"p-[8px] rounded-[10px] bg-primary disabled:opacity-50" + (templateDraft ? (allVarsFilled ? " cursor-pointer" : "") : !inCSWindow ? "" : " cursor-pointer")}
           onClick={() => {
             if (templateDraft) {
               allVarsFilled && sendTemplateMessage();

@@ -66,7 +66,7 @@ function WhatsAppIndex() {
               key={integration.address}
               aside={
                 <div className="p-[8px]">
-                  <WhatsAppOutlined style={{ fontSize: "24px", color: "#25D366" }} />
+                  <WhatsAppOutlined style={{ fontSize: "24px", color: "var(--foreground)" }} />
                 </div>
               }
               title={formatPhoneNumber((integration.extra as { phone_number?: string })?.phone_number || integration.address)}
