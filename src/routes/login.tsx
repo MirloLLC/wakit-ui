@@ -1,4 +1,4 @@
-import { createFileRoute } from "@tanstack/react-router";
+import { createFileRoute, Link } from "@tanstack/react-router";
 import { useState } from "react";
 import { supabase } from "@/supabase/client";
 import { useTranslation } from "@/hooks/useTranslation";
@@ -102,6 +102,13 @@ function Login() {
             {t("Entrar")}
           </button>
         </form>
+
+        <div className="text-center text-sm text-muted-foreground">
+          {t("¿No tienes cuenta?")}{" "}
+          <Link to="/signup" className="text-primary underline">
+            {t("Crear cuenta")}
+          </Link>
+        </div>
       </div>
     </div>
   );
