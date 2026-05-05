@@ -20,7 +20,7 @@ function StatsLayout() {
       <SectionHeader title={t("Estadísticas")} />
       <SectionBody>
         <SectionItem
-          title={t("Plan")}
+          title={t("Suscripción")}
           aside={
             <div className={`p-[8px] rounded-full ${pathname === "/stats/quotas" ? "bg-primary/10" : ""}`}>
               <Gauge className={`w-[24px] h-[24px] ${pathname === "/stats/quotas" ? "text-primary" : "text-muted-foreground"}`} />
