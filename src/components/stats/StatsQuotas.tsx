@@ -30,14 +30,9 @@ const PLANS = [
     period: "/mo",
     features: ["1,000,000 msgs/mo", "50 GB storage", "Unlimited phones", "Unlimited orgs", "Multi-tenant", "Priority support"],
   },
-  {
-    id: "enterprise",
-    name: "Enterprise",
-    price: "Custom",
-    period: "",
-    features: ["Custom volume", "Custom SLAs", "Dedicated Slack", "Priority features", "Custom integrations", "Onboarding support"],
-  },
 ];
+
+const ENTERPRISE_FEATURES = ["Custom volume", "Custom SLAs", "Dedicated Slack", "Priority features", "Custom integrations", "Onboarding support"];
 
 function PlanSelector() {
   const { translate: t } = useTranslation();
@@ -75,23 +70,18 @@ function PlanSelector() {
 
   return (
     <div className="flex flex-col gap-[12px]">
-      <div className="grid grid-cols-2 lg:grid-cols-4 gap-[10px]">
+      <div className="grid grid-cols-3 gap-[10px]">
         {PLANS.map((plan) => {
           const isCurrent = plan.id === currentPlan;
           const currentIdx = PLANS.findIndex((p) => p.id === currentPlan);
           const planIdx = PLANS.findIndex((p) => p.id === plan.id);
-          const isUpgrade = planIdx > currentIdx && plan.id !== "enterprise";
-          const isEnterprise = plan.id === "enterprise";
+          const isUpgrade = planIdx > currentIdx;
 
           return (
             <div
               key={plan.id}
               className={`rounded-xl border p-[14px] flex flex-col ${
-                isCurrent
-                  ? "border-primary bg-primary/5"
-                  : isEnterprise
-                    ? "border-foreground bg-foreground text-background"
-                    : "border-border bg-card"
+                isCurrent ? "border-primary bg-primary/5" : "border-border bg-card"
               }`}
             >
               <div className="flex items-center justify-between mb-[8px]">
@@ -104,13 +94,13 @@ function PlanSelector() {
               </div>
               <div className="flex items-baseline gap-[2px] mb-[10px]">
                 <span className="text-[24px] font-bold">{plan.price}</span>
-                <span className={`text-[12px] ${isEnterprise ? "opacity-60" : "text-muted-foreground"}`}>{plan.period}</span>
+                <span className="text-[12px] text-muted-foreground">{plan.period}</span>
               </div>
               <div className="flex flex-col gap-[6px] mb-[14px] flex-1">
                 {plan.features.map((f) => (
                   <div key={f} className="flex items-center gap-[6px]">
-                    <Check className={`w-[12px] h-[12px] shrink-0 ${isEnterprise ? "opacity-60" : "text-foreground"}`} />
-                    <span className={`text-[11px] ${isEnterprise ? "opacity-60" : "text-muted-foreground"}`}>{f}</span>
+                    <Check className="w-[12px] h-[12px] text-foreground shrink-0" />
+                    <span className="text-[11px] text-muted-foreground">{f}</span>
                   </div>
                 ))}
               </div>
@@ -133,17 +123,33 @@ function PlanSelector() {
                   {loading === "manage" ? "..." : t("Gestionar suscripción")}
                 </button>
               )}
-              {isEnterprise && (
-                <a
-                  href="mailto:rafa@mirlo.com"
-                  className="text-[12px] py-[6px] w-full border border-background/30 rounded-full hover:bg-background/10 text-center"
-                >
-                  {t("Contactar ventas")}
-                </a>
-              )}
             </div>
           );
         })}
+      </div>
+
+      {/* Enterprise */}
+      <div className="rounded-xl border border-foreground bg-foreground text-background p-[14px] flex items-center justify-between">
+        <div>
+          <span className="text-[14px] font-semibold">Enterprise</span>
+          <span className="text-[12px] opacity-60 ml-[8px]">Custom</span>
+        </div>
+        <div className="flex items-center gap-[16px]">
+          <div className="hidden sm:flex items-center gap-[12px]">
+            {ENTERPRISE_FEATURES.slice(0, 3).map((f) => (
+              <div key={f} className="flex items-center gap-[4px]">
+                <Check className="w-[12px] h-[12px] opacity-60 shrink-0" />
+                <span className="text-[11px] opacity-60">{f}</span>
+              </div>
+            ))}
+          </div>
+          <a
+            href="mailto:rafa@mirlo.com"
+            className="text-[12px] py-[6px] px-[16px] border border-background/30 rounded-full hover:bg-background/10 whitespace-nowrap"
+          >
+            {t("Contactar ventas")}
+          </a>
+        </div>
       </div>
     </div>
   );
@@ -172,7 +178,6 @@ export default function StatsQuotas() {
     <div className="flex flex-col gap-[16px] p-[24px] max-w-[600px] mx-auto w-full">
       <h2 className="text-[20px] font-medium">{t("Plan")}</h2>
       <PlanSelector />
-      <h2 className="text-[20px] font-medium mt-[8px]">{t("Uso")}</h2>
       {visibleProducts?.map((product) => {
         const tier = tierMap.get(product.id)!;
         const plan = planMap.get(product.id);
