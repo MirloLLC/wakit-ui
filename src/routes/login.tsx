@@ -73,7 +73,7 @@ function Login() {
             <div className="label">{t("Correo electrónico")}</div>
             <input
               className="text"
-              placeholder="gori@gmail.com"
+              placeholder="you@company.com"
               type="text"
               onChange={(e) => setEmail(e.target.value)}
               value={email}
