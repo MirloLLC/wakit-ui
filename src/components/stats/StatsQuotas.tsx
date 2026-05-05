@@ -129,26 +129,27 @@ function PlanSelector() {
       </div>
 
       {/* Enterprise */}
-      <div className="rounded-xl border border-foreground bg-foreground text-background p-[14px] flex items-center justify-between">
-        <div>
-          <span className="text-[14px] font-semibold">Enterprise</span>
-          <span className="text-[12px] opacity-60 ml-[8px]">Custom</span>
-        </div>
-        <div className="flex items-center gap-[16px]">
-          <div className="hidden sm:flex items-center gap-[12px]">
-            {ENTERPRISE_FEATURES.slice(0, 3).map((f) => (
-              <div key={f} className="flex items-center gap-[4px]">
-                <Check className="w-[12px] h-[12px] opacity-60 shrink-0" />
+      <div className="rounded-xl border border-foreground bg-foreground text-background overflow-hidden">
+        <div className="grid grid-cols-2">
+          <div className="p-[20px] flex flex-col gap-[10px]">
+            <span className="text-[14px] font-semibold">Enterprise</span>
+            <span className="text-[24px] font-bold">Custom</span>
+            <p className="text-[12px] opacity-60">{t("Para organizaciones que necesitan límites custom, SLAs y soporte dedicado.")}</p>
+            <a
+              href="mailto:rafa@mirlo.com"
+              className="mt-[4px] text-[12px] py-[6px] px-[16px] border border-background/30 rounded-full hover:bg-background/10 w-fit flex items-center gap-[6px]"
+            >
+              {t("Contactar ventas")} <ArrowUpRight className="w-[12px] h-[12px]" />
+            </a>
+          </div>
+          <div className="p-[20px] border-l border-background/10 grid grid-cols-2 gap-[10px] content-center">
+            {ENTERPRISE_FEATURES.map((f) => (
+              <div key={f} className="flex items-start gap-[6px]">
+                <Check className="w-[12px] h-[12px] opacity-60 shrink-0 mt-[2px]" />
                 <span className="text-[11px] opacity-60">{f}</span>
               </div>
             ))}
           </div>
-          <a
-            href="mailto:rafa@mirlo.com"
-            className="text-[12px] py-[6px] px-[16px] border border-background/30 rounded-full hover:bg-background/10 whitespace-nowrap"
-          >
-            {t("Contactar ventas")}
-          </a>
         </div>
       </div>
     </div>
