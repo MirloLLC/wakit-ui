@@ -10,8 +10,8 @@ export default function Header() {
 
   return (
     <div className="header flex justify-between w-full">
-      <div className="flex items-center truncate">
-        <div className="text-primary tracking-tighter font-bold text-[24px]">
+      <div className="flex items-center min-w-0">
+        <div className="text-primary tracking-tighter font-bold text-[24px] truncate">
           {org?.name || "wakit"}
         </div>
       </div>

@@ -1,4 +1,4 @@
-import { createFileRoute } from "@tanstack/react-router";
+import { createFileRoute, Link } from "@tanstack/react-router";
 import { useState } from "react";
 import { supabase } from "@/supabase/client";
 import { useTranslation } from "@/hooks/useTranslation";
@@ -66,14 +66,14 @@ function Login() {
           <GithubOutlined /> {t("Continuar con GitHub")}
         </button>
 
-        <div className={`border-b border-border w-full ${import.meta.env.DEV ? "" : "hidden"}`} />
+        <div className="border-b border-border w-full" />
 
-        <form onSubmit={handleLogInWithEmail} className={`login-form ${import.meta.env.DEV ? "" : "hidden"}`}>
+        <form onSubmit={handleLogInWithEmail} className="login-form">
           <label>
             <div className="label">{t("Correo electrónico")}</div>
             <input
               className="text"
-              placeholder="gori@gmail.com"
+              placeholder="you@company.com"
               type="text"
               onChange={(e) => setEmail(e.target.value)}
               value={email}
@@ -102,6 +102,13 @@ function Login() {
             {t("Entrar")}
           </button>
         </form>
+
+        <div className="text-center text-sm text-muted-foreground">
+          {t("¿No tienes cuenta?")}{" "}
+          <Link to="/signup" className="text-primary underline">
+            {t("Crear cuenta")}
+          </Link>
+        </div>
       </div>
     </div>
   );

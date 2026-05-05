@@ -28,13 +28,13 @@ export const Route = createRootRoute({
       user = data?.session?.user ?? null;
     }
 
-    if (user && location.pathname.startsWith("/login")) {
+    if (user && (location.pathname.startsWith("/login") || location.pathname.startsWith("/signup"))) {
       throw redirect({
         to: search.redirect || "/",
       });
     }
 
-    if (!user && !location.pathname.startsWith("/login") && !location.pathname.startsWith("/onboard")) {
+    if (!user && !location.pathname.startsWith("/login") && !location.pathname.startsWith("/signup") && !location.pathname.startsWith("/onboard")) {
       throw redirect({
         to: "/login",
         search: {

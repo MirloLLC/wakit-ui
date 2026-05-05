@@ -1,67 +1,67 @@
 @import "tailwindcss";
 
 :root {
-  --background: oklch(0.98 0.01 95.1);
-  --foreground: oklch(0.34 0.03 95.72);
-  --card: oklch(0.98 0.01 95.1);
-  --card-foreground: oklch(0.19 0 106.59);
-  --popover: oklch(1 0 0);
-  --popover-foreground: oklch(0.27 0.02 98.94);
-  --primary: oklch(0.62 0.14 39.04);
-  --primary-foreground: oklch(1 0 0);
-  --secondary: oklch(0.92 0.01 92.99);
-  --secondary-foreground: oklch(0.43 0.02 98.6);
-  --muted: oklch(0.93 0.02 90.24);
-  --muted-foreground: oklch(0.61 0.01 97.42);
-  --accent: oklch(0.92 0.01 92.99);
-  --accent-foreground: oklch(0.27 0.02 98.94);
-  --destructive: oklch(0.19 0 106.59);
-  --border: oklch(0.88 0.01 97.36);
-  --input: oklch(0.76 0.02 98.35);
-  --ring: oklch(0.59 0.17 253.06);
-  --sidebar: oklch(0.97 0.01 98.88);
-  --sidebar-foreground: oklch(0.36 0.01 106.65);
-  --sidebar-primary: oklch(0.62 0.14 39.04);
-  --sidebar-primary-foreground: oklch(0.99 0 0);
-  --sidebar-accent: oklch(0.92 0.01 92.99);
-  --sidebar-accent-foreground: oklch(0.33 0 0);
-  --sidebar-border: oklch(0.94 0 0);
-  --sidebar-ring: oklch(0.77 0 0);
-  
-  --chat-out: oklch(91.619% 0.0445 38.665);
-  --chat-in: oklch(1 0 0);
+  --background: #FAF7F2;
+  --foreground: #1F262C;
+  --card: #FFFFFF;
+  --card-foreground: #1F262C;
+  --popover: #FFFFFF;
+  --popover-foreground: #1F262C;
+  --primary: #1F262C;
+  --primary-foreground: #FFFFFF;
+  --secondary: #F5F0E8;
+  --secondary-foreground: #6B635D;
+  --muted: #F5F0E8;
+  --muted-foreground: #A69C97;
+  --accent: #F5F0E8;
+  --accent-foreground: #1F262C;
+  --destructive: #DC2626;
+  --border: #ECEAE8;
+  --input: #DFDCDA;
+  --ring: #1F262C;
+  --sidebar: #FFFFFF;
+  --sidebar-foreground: #6B635D;
+  --sidebar-primary: #1F262C;
+  --sidebar-primary-foreground: #FFFFFF;
+  --sidebar-accent: #F5F0E8;
+  --sidebar-accent-foreground: #1F262C;
+  --sidebar-border: #ECEAE8;
+  --sidebar-ring: #DFDCDA;
+
+  --chat-out: #F5F0E8;
+  --chat-in: #FFFFFF;
 }
 
 .dark {
-  --background: oklch(0.27 0 106.64);
-  --foreground: oklch(0.81 0.01 93.01);
-  --card: oklch(0.27 0 106.64);
-  --card-foreground: oklch(0.98 0.01 95.1);
-  --popover: oklch(0.31 0 106.6);
-  --popover-foreground: oklch(0.92 0 106.48);
-  --primary: oklch(0.67 0.13 38.76);
-  --primary-foreground: oklch(1 0 0);
-  --secondary: oklch(0.98 0.01 95.1);
-  --secondary-foreground: oklch(0.31 0 106.6);
-  --muted: oklch(0.22 0 106.71);
-  --muted-foreground: oklch(0.77 0.02 99.07);
-  --accent: oklch(0.21 0.01 95.42);
-  --accent-foreground: oklch(0.97 0.01 98.88);
-  --destructive: oklch(0.64 0.21 25.33);
-  --border: oklch(0.36 0.01 106.89);
-  --input: oklch(0.43 0.01 100.22);
-  --ring: oklch(0.59 0.17 253.06);
-  --sidebar: oklch(0.24 0.00 67.71); 
-  --sidebar-foreground: oklch(0.81 0.01 93.01);
-  --sidebar-primary: oklch(0.33 0 0);
-  --sidebar-primary-foreground: oklch(0.99 0 0);
-  --sidebar-accent: oklch(0.17 0 106.62);
-  --sidebar-accent-foreground: oklch(0.81 0.01 93.01);
-  --sidebar-border: oklch(0.94 0 0);
-  --sidebar-ring: oklch(0.77 0 0);
+  --background: #0e0c0a;
+  --foreground: #F5F0EB;
+  --card: #171411;
+  --card-foreground: #F5F0EB;
+  --popover: #171411;
+  --popover-foreground: #F5F0EB;
+  --primary: #F5F0EB;
+  --primary-foreground: #0e0c0a;
+  --secondary: #231f1b;
+  --secondary-foreground: #A69C97;
+  --muted: #1a1714;
+  --muted-foreground: #A69C97;
+  --accent: #1a1714;
+  --accent-foreground: #F5F0EB;
+  --destructive: #DC2626;
+  --border: #231f1b;
+  --input: #3a3530;
+  --ring: #F5F0EB;
+  --sidebar: #0e0c0a;
+  --sidebar-foreground: #A69C97;
+  --sidebar-primary: #F5F0EB;
+  --sidebar-primary-foreground: #0e0c0a;
+  --sidebar-accent: #1a1714;
+  --sidebar-accent-foreground: #F5F0EB;
+  --sidebar-border: #231f1b;
+  --sidebar-ring: #3a3530;
 
-  --chat-out: oklch(43.696% 0.08141 40.805);
-  --chat-in: oklch(0.31 0 106.6);
+  --chat-out: #1a1714;
+  --chat-in: #171411;
 }
 
 @theme inline {
@@ -198,7 +198,7 @@ button:disabled {
   }
 
   .header {
-    @apply h-[60px] py-[10px] px-[20px] flex shrink-0;
+    @apply min-h-[60px] py-[10px] px-[20px] flex shrink-0 overflow-visible;
   }
 
   .spin {
