@@ -11,7 +11,7 @@ export default function Header() {
   return (
     <div className="header flex justify-between w-full">
       <div className="flex items-center min-w-0">
-        <div className="text-primary tracking-tighter font-bold text-[24px] truncate">
+        <div className="text-primary font-[800] text-[24px] truncate" style={{ letterSpacing: "-0.05em" }}>
           {org?.name || "wakit"}
         </div>
       </div>

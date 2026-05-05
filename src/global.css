@@ -1,5 +1,10 @@
 @import "tailwindcss";
 
+@theme inline {
+  --font-sans: 'Geist', system-ui, -apple-system, sans-serif;
+  --font-mono: 'JetBrains Mono', monospace;
+}
+
 :root {
   --background: #FAF7F2;
   --foreground: #1F262C;
@@ -9,26 +14,26 @@
   --popover-foreground: #1F262C;
   --primary: #1F262C;
   --primary-foreground: #FFFFFF;
-  --secondary: #F5F0E8;
-  --secondary-foreground: #6B635D;
-  --muted: #F5F0E8;
-  --muted-foreground: #A69C97;
-  --accent: #F5F0E8;
+  --secondary: #F1ECE2;
+  --secondary-foreground: #2c343b;
+  --muted: #F1ECE2;
+  --muted-foreground: #6b6f74;
+  --accent: #F1ECE2;
   --accent-foreground: #1F262C;
   --destructive: #DC2626;
-  --border: #ECEAE8;
-  --input: #DFDCDA;
+  --border: rgba(31, 38, 44, 0.10);
+  --input: rgba(31, 38, 44, 0.18);
   --ring: #1F262C;
-  --sidebar: #FFFFFF;
-  --sidebar-foreground: #6B635D;
+  --sidebar: #F1ECE2;
+  --sidebar-foreground: #2c343b;
   --sidebar-primary: #1F262C;
   --sidebar-primary-foreground: #FFFFFF;
-  --sidebar-accent: #F5F0E8;
+  --sidebar-accent: rgba(31, 38, 44, 0.07);
   --sidebar-accent-foreground: #1F262C;
-  --sidebar-border: #ECEAE8;
-  --sidebar-ring: #DFDCDA;
+  --sidebar-border: rgba(31, 38, 44, 0.10);
+  --sidebar-ring: rgba(31, 38, 44, 0.18);
 
-  --chat-out: #F5F0E8;
+  --chat-out: #F1ECE2;
   --chat-in: #FFFFFF;
 }
 
@@ -101,14 +106,9 @@ body {
   padding: 0;
   margin: 0;
   font-family:
-    Segoe UI,
-    Helvetica Neue,
-    Helvetica,
-    Lucida Grande,
-    Arial,
-    Ubuntu,
-    Cantarell,
-    Fira Sans,
+    'Geist',
+    system-ui,
+    -apple-system,
     sans-serif;
 }
 
@@ -132,7 +132,7 @@ button:disabled {
 
 @layer components {
   .label {
-    @apply text-[12px] text-muted-foreground mb-[8px];
+    @apply font-mono text-[11px] tracking-[0.08em] uppercase text-muted-foreground mb-[8px];
   }
 
   form {
@@ -145,7 +145,7 @@ button:disabled {
   }
 
   .section-body p {
-    @apply text-muted-foreground text-[14px] leading-relaxed;
+    @apply text-muted-foreground text-[14px] leading-relaxed tracking-[-0.005em];
   }
 
   textarea {
@@ -154,7 +154,7 @@ button:disabled {
   }
 
   input.text {
-    @apply w-full border-b-[2px] border-transparent hover:border-input pb-[2px] focus-visible:outline-none text-[16px] text-foreground placeholder:text-muted-foreground bg-transparent focus-visible:border-primary;
+    @apply w-full border-b-[2px] border-transparent hover:border-input pb-[2px] focus-visible:outline-none text-[15px] tracking-[-0.005em] text-foreground placeholder:text-muted-foreground bg-transparent focus-visible:border-primary;
   }
 
   input.text:disabled {
@@ -166,7 +166,7 @@ button:disabled {
   }
   
   textarea.text {
-    @apply w-full focus-visible:outline-none text-[16px] text-foreground placeholder:text-muted-foreground bg-transparent focus-visible:border-primary;
+    @apply w-full focus-visible:outline-none text-[15px] tracking-[-0.005em] text-foreground placeholder:text-muted-foreground bg-transparent focus-visible:border-primary;
   }
 
   .instructions {
@@ -186,19 +186,19 @@ button:disabled {
   }
 
   select {
-    @apply w-full pb-[2px] border-b-[2px] border-transparent hover:border-input focus-visible:outline-none text-[16px] text-foreground placeholder:text-muted-foreground bg-transparent focus-visible:border-primary;
+    @apply w-full pb-[2px] border-b-[2px] border-transparent hover:border-input focus-visible:outline-none text-[15px] tracking-[-0.005em] text-foreground placeholder:text-muted-foreground bg-transparent focus-visible:border-primary;
   }
 
   button.primary {
-    @apply bg-primary hover:bg-primary/90 disabled:opacity-50 text-primary-foreground rounded-full text-[16px] py-[8px];
+    @apply bg-primary hover:bg-primary/90 disabled:opacity-50 text-primary-foreground rounded-[8px] text-[14px] font-medium tracking-[-0.005em] py-[10px];
   }
 
   button.destructive {
-    @apply bg-transparent border border-destructive hover:bg-destructive/10 text-destructive rounded-full text-[16px] py-[8px];
+    @apply bg-transparent border border-destructive hover:bg-destructive/10 text-destructive rounded-[8px] text-[14px] font-medium py-[10px];
   }
 
   .header {
-    @apply min-h-[60px] py-[10px] px-[20px] flex shrink-0 overflow-visible;
+    @apply min-h-[60px] py-[10px] px-[20px] flex shrink-0 overflow-visible border-b border-border;
   }
 
   .spin {
@@ -219,8 +219,8 @@ button:disabled {
     height: 100%;
     background-image: url("/bg-chat-tile-dark.png");
     background-repeat: repeat;
-    opacity: 0.06; /* Subtle pattern for light mode */
-    filter: invert(1); /* Invert to make dark pattern on light background if original is light-on-dark */
+    opacity: 0.04; /* Subtle pattern for light mode */
+    filter: invert(1) opacity(0.7); /* Invert and soften */
     z-index: -1;
     pointer-events: none;
   }
@@ -339,7 +339,7 @@ input[type="range"]::-moz-range-track {
 /* Firefox */
 * {
   scrollbar-width: thin;
-  scrollbar-color: #ced0d1 transparent;
+  scrollbar-color: rgba(31, 38, 44, 0.15) transparent;
 }
 
 /* WebKit */
@@ -353,7 +353,7 @@ input[type="range"]::-moz-range-track {
 }
 
 *::-webkit-scrollbar-thumb {
-  background-color: #ced0d1;
+  background-color: rgba(31, 38, 44, 0.15);
   border-radius: 0.6rem;
   border: none;
 }
@@ -423,4 +423,117 @@ input[type="range"]::-moz-range-track {
 
 .json-null {
   color: var(--muted-foreground);
+}
+
+/* ============================================================
+   WAKIT BRAND MANUAL — GLOBAL OVERRIDES
+   High-specificity rules that enforce the brand across all
+   components, including Tailwind inline classes and Ant Design.
+   ============================================================ */
+
+/* Force Geist on everything — nuclear option */
+*, *::before, *::after {
+  font-family: 'Geist', system-ui, -apple-system, sans-serif !important;
+}
+
+/* Mono stays mono */
+code, pre, .font-mono, [class*="mono"],
+.json-key, .json-string, .json-number, .json-boolean, .json-null {
+  font-family: 'JetBrains Mono', monospace !important;
+}
+
+/* Brand type scale — headings */
+h1, h2, h3 {
+  font-weight: 600 !important;
+  letter-spacing: -0.02em !important;
+  color: var(--foreground) !important;
+}
+
+h1 { font-size: 22px !important; }
+h2 { font-size: 20px !important; }
+h3 { font-size: 16px !important; }
+
+/* Body text */
+p, span, div, li, td, th, label, a {
+  letter-spacing: -0.005em;
+}
+
+/* Ant Design overrides — force brand font and colors */
+.ant-btn,
+.ant-input,
+.ant-select,
+.ant-picker,
+.ant-modal,
+.ant-drawer,
+.ant-table,
+.ant-tabs,
+.ant-form,
+.ant-card,
+.ant-dropdown,
+.ant-popover,
+.ant-tooltip,
+.ant-tag,
+.ant-badge,
+[class^="ant-"] {
+  font-family: 'Geist', system-ui, -apple-system, sans-serif !important;
+  letter-spacing: -0.005em !important;
+}
+
+/* Ant Design buttons — match brand */
+.ant-btn {
+  border-radius: 8px !important;
+  font-weight: 500 !important;
+  font-size: 14px !important;
+}
+
+.ant-btn-primary {
+  background-color: var(--primary) !important;
+  border-color: var(--primary) !important;
+}
+
+/* Ant Design inputs */
+.ant-input,
+.ant-select-selector,
+.ant-picker {
+  border-radius: 8px !important;
+  border-color: var(--border) !important;
+  font-size: 15px !important;
+}
+
+.ant-input:focus,
+.ant-input-focused,
+.ant-select-focused .ant-select-selector {
+  border-color: var(--foreground) !important;
+  box-shadow: none !important;
+}
+
+/* Ant Design tabs */
+.ant-tabs-tab {
+  font-size: 13.5px !important;
+  color: var(--muted-foreground) !important;
+}
+
+.ant-tabs-tab-active .ant-tabs-tab-btn {
+  color: var(--foreground) !important;
+  font-weight: 500 !important;
+}
+
+.ant-tabs-ink-bar {
+  background: var(--foreground) !important;
+}
+
+/* Ant Design modal */
+.ant-modal-content {
+  border-radius: 12px !important;
+}
+
+.ant-modal-header {
+  border-bottom: 1px solid var(--border) !important;
+}
+
+/* Ant Design tags */
+.ant-tag {
+  border-radius: 6px !important;
+  font-size: 12px !important;
+  font-weight: 500 !important;
 }
