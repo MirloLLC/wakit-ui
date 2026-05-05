@@ -424,3 +424,116 @@ input[type="range"]::-moz-range-track {
 .json-null {
   color: var(--muted-foreground);
 }
+
+/* ============================================================
+   WAKIT BRAND MANUAL — GLOBAL OVERRIDES
+   High-specificity rules that enforce the brand across all
+   components, including Tailwind inline classes and Ant Design.
+   ============================================================ */
+
+/* Force Geist on everything — nuclear option */
+*, *::before, *::after {
+  font-family: 'Geist', system-ui, -apple-system, sans-serif !important;
+}
+
+/* Mono stays mono */
+code, pre, .font-mono, [class*="mono"],
+.json-key, .json-string, .json-number, .json-boolean, .json-null {
+  font-family: 'JetBrains Mono', monospace !important;
+}
+
+/* Brand type scale — headings */
+h1, h2, h3 {
+  font-weight: 600 !important;
+  letter-spacing: -0.02em !important;
+  color: var(--foreground) !important;
+}
+
+h1 { font-size: 22px !important; }
+h2 { font-size: 20px !important; }
+h3 { font-size: 16px !important; }
+
+/* Body text */
+p, span, div, li, td, th, label, a {
+  letter-spacing: -0.005em;
+}
+
+/* Ant Design overrides — force brand font and colors */
+.ant-btn,
+.ant-input,
+.ant-select,
+.ant-picker,
+.ant-modal,
+.ant-drawer,
+.ant-table,
+.ant-tabs,
+.ant-form,
+.ant-card,
+.ant-dropdown,
+.ant-popover,
+.ant-tooltip,
+.ant-tag,
+.ant-badge,
+[class^="ant-"] {
+  font-family: 'Geist', system-ui, -apple-system, sans-serif !important;
+  letter-spacing: -0.005em !important;
+}
+
+/* Ant Design buttons — match brand */
+.ant-btn {
+  border-radius: 8px !important;
+  font-weight: 500 !important;
+  font-size: 14px !important;
+}
+
+.ant-btn-primary {
+  background-color: var(--primary) !important;
+  border-color: var(--primary) !important;
+}
+
+/* Ant Design inputs */
+.ant-input,
+.ant-select-selector,
+.ant-picker {
+  border-radius: 8px !important;
+  border-color: var(--border) !important;
+  font-size: 15px !important;
+}
+
+.ant-input:focus,
+.ant-input-focused,
+.ant-select-focused .ant-select-selector {
+  border-color: var(--foreground) !important;
+  box-shadow: none !important;
+}
+
+/* Ant Design tabs */
+.ant-tabs-tab {
+  font-size: 13.5px !important;
+  color: var(--muted-foreground) !important;
+}
+
+.ant-tabs-tab-active .ant-tabs-tab-btn {
+  color: var(--foreground) !important;
+  font-weight: 500 !important;
+}
+
+.ant-tabs-ink-bar {
+  background: var(--foreground) !important;
+}
+
+/* Ant Design modal */
+.ant-modal-content {
+  border-radius: 12px !important;
+}
+
+.ant-modal-header {
+  border-bottom: 1px solid var(--border) !important;
+}
+
+/* Ant Design tags */
+.ant-tag {
+  border-radius: 6px !important;
+  font-size: 12px !important;
+  font-weight: 500 !important;
+}
