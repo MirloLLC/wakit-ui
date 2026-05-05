@@ -147,7 +147,7 @@
   "Generar": "Generate",
   "Generar clave API": "Generate API Key",
   "Generar enlace": "Generate link",
-  "Generá un enlace para que un tercero conecte su número de WhatsApp a tu organización. No necesita tener cuenta en OpenBSP ni ser miembro de tu organización.": "Generate a link for a third party to connect their WhatsApp number to your organization. They don't need an OpenBSP account or to be a member of your organization.",
+  "Genera un enlace para que un tercero conecte su número de WhatsApp a tu organización. No necesita tener cuenta en wakit ni ser miembro de tu organización.": "Generate a link for a third party to connect their WhatsApp number to your organization. They don't need a wakit account or to be a member of your organization.",
   "Gestionar conversaciones de WhatsApp": "Manage WhatsApp conversations",
   "Gestionar eventos y calendarios": "Manage events and calendars",
   "Google Calendar": "Google Calendar",
