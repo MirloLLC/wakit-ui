@@ -198,7 +198,7 @@ button:disabled {
   }
 
   .header {
-    @apply h-[60px] py-[10px] px-[20px] flex shrink-0;
+    @apply min-h-[60px] py-[10px] px-[20px] flex shrink-0 overflow-visible;
   }
 
   .spin {
