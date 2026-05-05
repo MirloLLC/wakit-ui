@@ -1,12 +1,9 @@
 import { useTranslation } from "@/hooks/useTranslation";
-import { useProducts, useUsage, useTierLimits, usePlanProducts, useSubscription } from "@/queries/useBilling";
+import { useSubscription } from "@/queries/useBilling";
 import { supabase } from "@/supabase/client";
 import useBoundStore from "@/stores/useBoundStore";
 import { Check, ArrowUpRight } from "lucide-react";
 import { useState } from "react";
-import QuotaBar from "./QuotaBar";
-
-const AI_CREDITS_BUDGET = 20;
 
 const PLANS = [
   {
@@ -158,22 +155,6 @@ function PlanSelector() {
 
 export default function StatsQuotas() {
   const { translate: t } = useTranslation();
-  const { data: products } = useProducts();
-  const { data: monthUsage } = useUsage("month");
-  const { data: lifetimeUsage } = useUsage("lifetime");
-  const { data: tierLimits } = useTierLimits();
-  const { data: planProducts } = usePlanProducts();
-
-  const monthMap = new Map(monthUsage?.map((u) => [u.product_id, u.quantity]));
-  const lifetimeMap = new Map(lifetimeUsage?.map((u) => [u.product_id, u.quantity]));
-  const tierMap = new Map(
-    tierLimits?.map((tl) => [tl.product_id, { cap: tl.cap, interval: tl.interval }]),
-  );
-  const planMap = new Map(
-    planProducts?.map((pp) => [pp.product_id, { included: pp.included, interval: pp.interval }]),
-  );
-
-  const visibleProducts = products?.filter((p) => tierMap.has(p.id));
 
   return (
     <div className="flex flex-col gap-[16px] p-[24px] max-w-[600px] mx-auto w-full">
