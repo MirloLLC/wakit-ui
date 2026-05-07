@@ -203,11 +203,12 @@ function AddressWebhooks({ orgAddressId }: { orgAddressId: string }) {
     setSaving(true);
     await supabase.from("webhooks").insert({
       organization_id: orgId,
+      organization_address: orgAddressId,
       table_name: newTable as "messages" | "conversations",
       operations: ["insert", "update"] as ("insert" | "update")[],
       url: newUrl,
       token: newToken || null,
-    } as any);
+    });
     queryClient.invalidateQueries({ queryKey: ["address-webhooks"] });
     setNewUrl("");
     setNewToken("");
