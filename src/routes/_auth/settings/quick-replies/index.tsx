@@ -3,10 +3,10 @@ import SectionHeader from "@/components/SectionHeader";
 import SectionItem from "@/components/SectionItem";
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { useTranslation } from "@/hooks/useTranslation";
-import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
+import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/supabase/client";
 import useBoundStore from "@/stores/useBoundStore";
-import { Plus, Trash2, MessageSquareText } from "lucide-react";
+import { Plus, MessageSquareText } from "lucide-react";
 import { useState } from "react";
 
 export const Route = createFileRoute("/_auth/settings/quick-replies/")({
@@ -17,7 +17,6 @@ function QuickRepliesIndex() {
   const { translate: t } = useTranslation();
   const navigate = useNavigate();
   const orgId = useBoundStore((state) => state.ui.activeOrgId);
-  const queryClient = useQueryClient();
   const [search, setSearch] = useState("");
 
   const { data: replies, isLoading } = useQuery({
@@ -31,15 +30,6 @@ function QuickRepliesIndex() {
       return data || [];
     },
     enabled: !!orgId,
-  });
-
-  const deleteMutation = useMutation({
-    mutationFn: async (id: string) => {
-      await supabase.from("quick_replies").delete().eq("id", id);
-    },
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["quick-replies"] });
-    },
   });
 
   const filtered = (replies || []).filter((r) => {

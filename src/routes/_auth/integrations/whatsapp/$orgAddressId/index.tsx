@@ -204,8 +204,8 @@ function AddressWebhooks({ orgAddressId }: { orgAddressId: string }) {
     await supabase.from("webhooks").insert({
       organization_id: orgId,
       organization_address: orgAddressId,
-      table_name: newTable,
-      operations: ["insert", "update"],
+      table_name: newTable as "messages" | "conversations",
+      operations: ["insert", "update"] as ("insert" | "update")[],
       url: newUrl,
       token: newToken || null,
     });
