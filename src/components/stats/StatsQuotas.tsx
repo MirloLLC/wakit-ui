@@ -16,7 +16,7 @@ const PLANS = [
   {
     id: "starter",
     name: "Starter",
-    price: "$25",
+    price: "$20",
     period: "/mo",
     features: ["50,000 msgs/mo", "5 GB storage", "5 phone numbers", "3 organizations", "Multi-tenant"],
   },

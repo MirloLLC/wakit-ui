@@ -31,18 +31,23 @@ import { Route as AuthContactsContactIdRouteImport } from './routes/_auth/contac
 import { Route as AuthAgentsNewRouteImport } from './routes/_auth/agents/new'
 import { Route as AuthAgentsAgentIdRouteImport } from './routes/_auth/agents/$agentId'
 import { Route as AuthSettingsWebhooksIndexRouteImport } from './routes/_auth/settings/webhooks/index'
+import { Route as AuthSettingsQuickRepliesIndexRouteImport } from './routes/_auth/settings/quick-replies/index'
 import { Route as AuthSettingsOrganizationIndexRouteImport } from './routes/_auth/settings/organization/index'
 import { Route as AuthSettingsMembersIndexRouteImport } from './routes/_auth/settings/members/index'
 import { Route as AuthSettingsApiKeysIndexRouteImport } from './routes/_auth/settings/api-keys/index'
 import { Route as AuthIntegrationsWhatsappIndexRouteImport } from './routes/_auth/integrations/whatsapp/index'
+import { Route as AuthIntegrationsMigrateIndexRouteImport } from './routes/_auth/integrations/migrate/index'
 import { Route as AuthSettingsWebhooksNewRouteImport } from './routes/_auth/settings/webhooks/new'
 import { Route as AuthSettingsWebhooksWebhookIdRouteImport } from './routes/_auth/settings/webhooks/$webhookId'
+import { Route as AuthSettingsQuickRepliesNewRouteImport } from './routes/_auth/settings/quick-replies/new'
+import { Route as AuthSettingsQuickRepliesReplyIdRouteImport } from './routes/_auth/settings/quick-replies/$replyId'
 import { Route as AuthSettingsOrganizationNewRouteImport } from './routes/_auth/settings/organization/new'
 import { Route as AuthSettingsMembersNewRouteImport } from './routes/_auth/settings/members/new'
 import { Route as AuthSettingsMembersMemberIdRouteImport } from './routes/_auth/settings/members/$memberId'
 import { Route as AuthSettingsApiKeysNewRouteImport } from './routes/_auth/settings/api-keys/new'
 import { Route as AuthSettingsApiKeysApiKeyIdRouteImport } from './routes/_auth/settings/api-keys/$apiKeyId'
 import { Route as AuthIntegrationsWhatsappNewRouteImport } from './routes/_auth/integrations/whatsapp/new'
+import { Route as AuthIntegrationsMigrateTwilioRouteImport } from './routes/_auth/integrations/migrate/twilio'
 import { Route as AuthIntegrationsWhatsappOnboardingIndexRouteImport } from './routes/_auth/integrations/whatsapp/onboarding/index'
 import { Route as AuthIntegrationsWhatsappOrgAddressIdIndexRouteImport } from './routes/_auth/integrations/whatsapp/$orgAddressId/index'
 import { Route as AuthIntegrationsWhatsappOnboardingNewRouteImport } from './routes/_auth/integrations/whatsapp/onboarding/new'
@@ -162,6 +167,12 @@ const AuthSettingsWebhooksIndexRoute =
     path: '/settings/webhooks/',
     getParentRoute: () => AuthRoute,
   } as any)
+const AuthSettingsQuickRepliesIndexRoute =
+  AuthSettingsQuickRepliesIndexRouteImport.update({
+    id: '/settings/quick-replies/',
+    path: '/settings/quick-replies/',
+    getParentRoute: () => AuthRoute,
+  } as any)
 const AuthSettingsOrganizationIndexRoute =
   AuthSettingsOrganizationIndexRouteImport.update({
     id: '/settings/organization/',
@@ -186,6 +197,12 @@ const AuthIntegrationsWhatsappIndexRoute =
     path: '/integrations/whatsapp/',
     getParentRoute: () => AuthRoute,
   } as any)
+const AuthIntegrationsMigrateIndexRoute =
+  AuthIntegrationsMigrateIndexRouteImport.update({
+    id: '/integrations/migrate/',
+    path: '/integrations/migrate/',
+    getParentRoute: () => AuthRoute,
+  } as any)
 const AuthSettingsWebhooksNewRoute = AuthSettingsWebhooksNewRouteImport.update({
   id: '/settings/webhooks/new',
   path: '/settings/webhooks/new',
@@ -195,6 +212,18 @@ const AuthSettingsWebhooksWebhookIdRoute =
   AuthSettingsWebhooksWebhookIdRouteImport.update({
     id: '/settings/webhooks/$webhookId',
     path: '/settings/webhooks/$webhookId',
+    getParentRoute: () => AuthRoute,
+  } as any)
+const AuthSettingsQuickRepliesNewRoute =
+  AuthSettingsQuickRepliesNewRouteImport.update({
+    id: '/settings/quick-replies/new',
+    path: '/settings/quick-replies/new',
+    getParentRoute: () => AuthRoute,
+  } as any)
+const AuthSettingsQuickRepliesReplyIdRoute =
+  AuthSettingsQuickRepliesReplyIdRouteImport.update({
+    id: '/settings/quick-replies/$replyId',
+    path: '/settings/quick-replies/$replyId',
     getParentRoute: () => AuthRoute,
   } as any)
 const AuthSettingsOrganizationNewRoute =
@@ -229,6 +258,12 @@ const AuthIntegrationsWhatsappNewRoute =
   AuthIntegrationsWhatsappNewRouteImport.update({
     id: '/integrations/whatsapp/new',
     path: '/integrations/whatsapp/new',
+    getParentRoute: () => AuthRoute,
+  } as any)
+const AuthIntegrationsMigrateTwilioRoute =
+  AuthIntegrationsMigrateTwilioRouteImport.update({
+    id: '/integrations/migrate/twilio',
+    path: '/integrations/migrate/twilio',
     getParentRoute: () => AuthRoute,
   } as any)
 const AuthIntegrationsWhatsappOnboardingIndexRoute =
@@ -295,18 +330,23 @@ export interface FileRoutesByFullPath {
   '/integrations': typeof AuthIntegrationsIndexRoute
   '/settings': typeof AuthSettingsIndexRoute
   '/stats/': typeof AuthStatsIndexRoute
+  '/integrations/migrate/twilio': typeof AuthIntegrationsMigrateTwilioRoute
   '/integrations/whatsapp/new': typeof AuthIntegrationsWhatsappNewRoute
   '/settings/api-keys/$apiKeyId': typeof AuthSettingsApiKeysApiKeyIdRoute
   '/settings/api-keys/new': typeof AuthSettingsApiKeysNewRoute
   '/settings/members/$memberId': typeof AuthSettingsMembersMemberIdRoute
   '/settings/members/new': typeof AuthSettingsMembersNewRoute
   '/settings/organization/new': typeof AuthSettingsOrganizationNewRoute
+  '/settings/quick-replies/$replyId': typeof AuthSettingsQuickRepliesReplyIdRoute
+  '/settings/quick-replies/new': typeof AuthSettingsQuickRepliesNewRoute
   '/settings/webhooks/$webhookId': typeof AuthSettingsWebhooksWebhookIdRoute
   '/settings/webhooks/new': typeof AuthSettingsWebhooksNewRoute
+  '/integrations/migrate': typeof AuthIntegrationsMigrateIndexRoute
   '/integrations/whatsapp': typeof AuthIntegrationsWhatsappIndexRoute
   '/settings/api-keys': typeof AuthSettingsApiKeysIndexRoute
   '/settings/members': typeof AuthSettingsMembersIndexRoute
   '/settings/organization': typeof AuthSettingsOrganizationIndexRoute
+  '/settings/quick-replies': typeof AuthSettingsQuickRepliesIndexRoute
   '/settings/webhooks': typeof AuthSettingsWebhooksIndexRoute
   '/integrations/whatsapp/onboarding/$tokenId': typeof AuthIntegrationsWhatsappOnboardingTokenIdRoute
   '/integrations/whatsapp/onboarding/new': typeof AuthIntegrationsWhatsappOnboardingNewRoute
@@ -336,18 +376,23 @@ export interface FileRoutesByTo {
   '/integrations': typeof AuthIntegrationsIndexRoute
   '/settings': typeof AuthSettingsIndexRoute
   '/stats': typeof AuthStatsIndexRoute
+  '/integrations/migrate/twilio': typeof AuthIntegrationsMigrateTwilioRoute
   '/integrations/whatsapp/new': typeof AuthIntegrationsWhatsappNewRoute
   '/settings/api-keys/$apiKeyId': typeof AuthSettingsApiKeysApiKeyIdRoute
   '/settings/api-keys/new': typeof AuthSettingsApiKeysNewRoute
   '/settings/members/$memberId': typeof AuthSettingsMembersMemberIdRoute
   '/settings/members/new': typeof AuthSettingsMembersNewRoute
   '/settings/organization/new': typeof AuthSettingsOrganizationNewRoute
+  '/settings/quick-replies/$replyId': typeof AuthSettingsQuickRepliesReplyIdRoute
+  '/settings/quick-replies/new': typeof AuthSettingsQuickRepliesNewRoute
   '/settings/webhooks/$webhookId': typeof AuthSettingsWebhooksWebhookIdRoute
   '/settings/webhooks/new': typeof AuthSettingsWebhooksNewRoute
+  '/integrations/migrate': typeof AuthIntegrationsMigrateIndexRoute
   '/integrations/whatsapp': typeof AuthIntegrationsWhatsappIndexRoute
   '/settings/api-keys': typeof AuthSettingsApiKeysIndexRoute
   '/settings/members': typeof AuthSettingsMembersIndexRoute
   '/settings/organization': typeof AuthSettingsOrganizationIndexRoute
+  '/settings/quick-replies': typeof AuthSettingsQuickRepliesIndexRoute
   '/settings/webhooks': typeof AuthSettingsWebhooksIndexRoute
   '/integrations/whatsapp/onboarding/$tokenId': typeof AuthIntegrationsWhatsappOnboardingTokenIdRoute
   '/integrations/whatsapp/onboarding/new': typeof AuthIntegrationsWhatsappOnboardingNewRoute
@@ -380,18 +425,23 @@ export interface FileRoutesById {
   '/_auth/integrations/': typeof AuthIntegrationsIndexRoute
   '/_auth/settings/': typeof AuthSettingsIndexRoute
   '/_auth/stats/': typeof AuthStatsIndexRoute
+  '/_auth/integrations/migrate/twilio': typeof AuthIntegrationsMigrateTwilioRoute
   '/_auth/integrations/whatsapp/new': typeof AuthIntegrationsWhatsappNewRoute
   '/_auth/settings/api-keys/$apiKeyId': typeof AuthSettingsApiKeysApiKeyIdRoute
   '/_auth/settings/api-keys/new': typeof AuthSettingsApiKeysNewRoute
   '/_auth/settings/members/$memberId': typeof AuthSettingsMembersMemberIdRoute
   '/_auth/settings/members/new': typeof AuthSettingsMembersNewRoute
   '/_auth/settings/organization/new': typeof AuthSettingsOrganizationNewRoute
+  '/_auth/settings/quick-replies/$replyId': typeof AuthSettingsQuickRepliesReplyIdRoute
+  '/_auth/settings/quick-replies/new': typeof AuthSettingsQuickRepliesNewRoute
   '/_auth/settings/webhooks/$webhookId': typeof AuthSettingsWebhooksWebhookIdRoute
   '/_auth/settings/webhooks/new': typeof AuthSettingsWebhooksNewRoute
+  '/_auth/integrations/migrate/': typeof AuthIntegrationsMigrateIndexRoute
   '/_auth/integrations/whatsapp/': typeof AuthIntegrationsWhatsappIndexRoute
   '/_auth/settings/api-keys/': typeof AuthSettingsApiKeysIndexRoute
   '/_auth/settings/members/': typeof AuthSettingsMembersIndexRoute
   '/_auth/settings/organization/': typeof AuthSettingsOrganizationIndexRoute
+  '/_auth/settings/quick-replies/': typeof AuthSettingsQuickRepliesIndexRoute
   '/_auth/settings/webhooks/': typeof AuthSettingsWebhooksIndexRoute
   '/_auth/integrations/whatsapp/onboarding/$tokenId': typeof AuthIntegrationsWhatsappOnboardingTokenIdRoute
   '/_auth/integrations/whatsapp/onboarding/new': typeof AuthIntegrationsWhatsappOnboardingNewRoute
@@ -424,18 +474,23 @@ export interface FileRouteTypes {
     | '/integrations'
     | '/settings'
     | '/stats/'
+    | '/integrations/migrate/twilio'
     | '/integrations/whatsapp/new'
     | '/settings/api-keys/$apiKeyId'
     | '/settings/api-keys/new'
     | '/settings/members/$memberId'
     | '/settings/members/new'
     | '/settings/organization/new'
+    | '/settings/quick-replies/$replyId'
+    | '/settings/quick-replies/new'
     | '/settings/webhooks/$webhookId'
     | '/settings/webhooks/new'
+    | '/integrations/migrate'
     | '/integrations/whatsapp'
     | '/settings/api-keys'
     | '/settings/members'
     | '/settings/organization'
+    | '/settings/quick-replies'
     | '/settings/webhooks'
     | '/integrations/whatsapp/onboarding/$tokenId'
     | '/integrations/whatsapp/onboarding/new'
@@ -465,18 +520,23 @@ export interface FileRouteTypes {
     | '/integrations'
     | '/settings'
     | '/stats'
+    | '/integrations/migrate/twilio'
     | '/integrations/whatsapp/new'
     | '/settings/api-keys/$apiKeyId'
     | '/settings/api-keys/new'
     | '/settings/members/$memberId'
     | '/settings/members/new'
     | '/settings/organization/new'
+    | '/settings/quick-replies/$replyId'
+    | '/settings/quick-replies/new'
     | '/settings/webhooks/$webhookId'
     | '/settings/webhooks/new'
+    | '/integrations/migrate'
     | '/integrations/whatsapp'
     | '/settings/api-keys'
     | '/settings/members'
     | '/settings/organization'
+    | '/settings/quick-replies'
     | '/settings/webhooks'
     | '/integrations/whatsapp/onboarding/$tokenId'
     | '/integrations/whatsapp/onboarding/new'
@@ -508,18 +568,23 @@ export interface FileRouteTypes {
     | '/_auth/integrations/'
     | '/_auth/settings/'
     | '/_auth/stats/'
+    | '/_auth/integrations/migrate/twilio'
     | '/_auth/integrations/whatsapp/new'
     | '/_auth/settings/api-keys/$apiKeyId'
     | '/_auth/settings/api-keys/new'
     | '/_auth/settings/members/$memberId'
     | '/_auth/settings/members/new'
     | '/_auth/settings/organization/new'
+    | '/_auth/settings/quick-replies/$replyId'
+    | '/_auth/settings/quick-replies/new'
     | '/_auth/settings/webhooks/$webhookId'
     | '/_auth/settings/webhooks/new'
+    | '/_auth/integrations/migrate/'
     | '/_auth/integrations/whatsapp/'
     | '/_auth/settings/api-keys/'
     | '/_auth/settings/members/'
     | '/_auth/settings/organization/'
+    | '/_auth/settings/quick-replies/'
     | '/_auth/settings/webhooks/'
     | '/_auth/integrations/whatsapp/onboarding/$tokenId'
     | '/_auth/integrations/whatsapp/onboarding/new'
@@ -694,6 +759,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthSettingsWebhooksIndexRouteImport
       parentRoute: typeof AuthRoute
     }
+    '/_auth/settings/quick-replies/': {
+      id: '/_auth/settings/quick-replies/'
+      path: '/settings/quick-replies'
+      fullPath: '/settings/quick-replies'
+      preLoaderRoute: typeof AuthSettingsQuickRepliesIndexRouteImport
+      parentRoute: typeof AuthRoute
+    }
     '/_auth/settings/organization/': {
       id: '/_auth/settings/organization/'
       path: '/settings/organization'
@@ -722,6 +794,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthIntegrationsWhatsappIndexRouteImport
       parentRoute: typeof AuthRoute
     }
+    '/_auth/integrations/migrate/': {
+      id: '/_auth/integrations/migrate/'
+      path: '/integrations/migrate'
+      fullPath: '/integrations/migrate'
+      preLoaderRoute: typeof AuthIntegrationsMigrateIndexRouteImport
+      parentRoute: typeof AuthRoute
+    }
     '/_auth/settings/webhooks/new': {
       id: '/_auth/settings/webhooks/new'
       path: '/settings/webhooks/new'
@@ -734,6 +813,20 @@ declare module '@tanstack/react-router' {
       path: '/settings/webhooks/$webhookId'
       fullPath: '/settings/webhooks/$webhookId'
       preLoaderRoute: typeof AuthSettingsWebhooksWebhookIdRouteImport
+      parentRoute: typeof AuthRoute
+    }
+    '/_auth/settings/quick-replies/new': {
+      id: '/_auth/settings/quick-replies/new'
+      path: '/settings/quick-replies/new'
+      fullPath: '/settings/quick-replies/new'
+      preLoaderRoute: typeof AuthSettingsQuickRepliesNewRouteImport
+      parentRoute: typeof AuthRoute
+    }
+    '/_auth/settings/quick-replies/$replyId': {
+      id: '/_auth/settings/quick-replies/$replyId'
+      path: '/settings/quick-replies/$replyId'
+      fullPath: '/settings/quick-replies/$replyId'
+      preLoaderRoute: typeof AuthSettingsQuickRepliesReplyIdRouteImport
       parentRoute: typeof AuthRoute
     }
     '/_auth/settings/organization/new': {
@@ -776,6 +869,13 @@ declare module '@tanstack/react-router' {
       path: '/integrations/whatsapp/new'
       fullPath: '/integrations/whatsapp/new'
       preLoaderRoute: typeof AuthIntegrationsWhatsappNewRouteImport
+      parentRoute: typeof AuthRoute
+    }
+    '/_auth/integrations/migrate/twilio': {
+      id: '/_auth/integrations/migrate/twilio'
+      path: '/integrations/migrate/twilio'
+      fullPath: '/integrations/migrate/twilio'
+      preLoaderRoute: typeof AuthIntegrationsMigrateTwilioRouteImport
       parentRoute: typeof AuthRoute
     }
     '/_auth/integrations/whatsapp/onboarding/': {
@@ -860,18 +960,23 @@ interface AuthRouteChildren {
   AuthConversationsIndexRoute: typeof AuthConversationsIndexRoute
   AuthIntegrationsIndexRoute: typeof AuthIntegrationsIndexRoute
   AuthSettingsIndexRoute: typeof AuthSettingsIndexRoute
+  AuthIntegrationsMigrateTwilioRoute: typeof AuthIntegrationsMigrateTwilioRoute
   AuthIntegrationsWhatsappNewRoute: typeof AuthIntegrationsWhatsappNewRoute
   AuthSettingsApiKeysApiKeyIdRoute: typeof AuthSettingsApiKeysApiKeyIdRoute
   AuthSettingsApiKeysNewRoute: typeof AuthSettingsApiKeysNewRoute
   AuthSettingsMembersMemberIdRoute: typeof AuthSettingsMembersMemberIdRoute
   AuthSettingsMembersNewRoute: typeof AuthSettingsMembersNewRoute
   AuthSettingsOrganizationNewRoute: typeof AuthSettingsOrganizationNewRoute
+  AuthSettingsQuickRepliesReplyIdRoute: typeof AuthSettingsQuickRepliesReplyIdRoute
+  AuthSettingsQuickRepliesNewRoute: typeof AuthSettingsQuickRepliesNewRoute
   AuthSettingsWebhooksWebhookIdRoute: typeof AuthSettingsWebhooksWebhookIdRoute
   AuthSettingsWebhooksNewRoute: typeof AuthSettingsWebhooksNewRoute
+  AuthIntegrationsMigrateIndexRoute: typeof AuthIntegrationsMigrateIndexRoute
   AuthIntegrationsWhatsappIndexRoute: typeof AuthIntegrationsWhatsappIndexRoute
   AuthSettingsApiKeysIndexRoute: typeof AuthSettingsApiKeysIndexRoute
   AuthSettingsMembersIndexRoute: typeof AuthSettingsMembersIndexRoute
   AuthSettingsOrganizationIndexRoute: typeof AuthSettingsOrganizationIndexRoute
+  AuthSettingsQuickRepliesIndexRoute: typeof AuthSettingsQuickRepliesIndexRoute
   AuthSettingsWebhooksIndexRoute: typeof AuthSettingsWebhooksIndexRoute
   AuthIntegrationsWhatsappOnboardingTokenIdRoute: typeof AuthIntegrationsWhatsappOnboardingTokenIdRoute
   AuthIntegrationsWhatsappOnboardingNewRoute: typeof AuthIntegrationsWhatsappOnboardingNewRoute
@@ -897,18 +1002,23 @@ const AuthRouteChildren: AuthRouteChildren = {
   AuthConversationsIndexRoute: AuthConversationsIndexRoute,
   AuthIntegrationsIndexRoute: AuthIntegrationsIndexRoute,
   AuthSettingsIndexRoute: AuthSettingsIndexRoute,
+  AuthIntegrationsMigrateTwilioRoute: AuthIntegrationsMigrateTwilioRoute,
   AuthIntegrationsWhatsappNewRoute: AuthIntegrationsWhatsappNewRoute,
   AuthSettingsApiKeysApiKeyIdRoute: AuthSettingsApiKeysApiKeyIdRoute,
   AuthSettingsApiKeysNewRoute: AuthSettingsApiKeysNewRoute,
   AuthSettingsMembersMemberIdRoute: AuthSettingsMembersMemberIdRoute,
   AuthSettingsMembersNewRoute: AuthSettingsMembersNewRoute,
   AuthSettingsOrganizationNewRoute: AuthSettingsOrganizationNewRoute,
+  AuthSettingsQuickRepliesReplyIdRoute: AuthSettingsQuickRepliesReplyIdRoute,
+  AuthSettingsQuickRepliesNewRoute: AuthSettingsQuickRepliesNewRoute,
   AuthSettingsWebhooksWebhookIdRoute: AuthSettingsWebhooksWebhookIdRoute,
   AuthSettingsWebhooksNewRoute: AuthSettingsWebhooksNewRoute,
+  AuthIntegrationsMigrateIndexRoute: AuthIntegrationsMigrateIndexRoute,
   AuthIntegrationsWhatsappIndexRoute: AuthIntegrationsWhatsappIndexRoute,
   AuthSettingsApiKeysIndexRoute: AuthSettingsApiKeysIndexRoute,
   AuthSettingsMembersIndexRoute: AuthSettingsMembersIndexRoute,
   AuthSettingsOrganizationIndexRoute: AuthSettingsOrganizationIndexRoute,
+  AuthSettingsQuickRepliesIndexRoute: AuthSettingsQuickRepliesIndexRoute,
   AuthSettingsWebhooksIndexRoute: AuthSettingsWebhooksIndexRoute,
   AuthIntegrationsWhatsappOnboardingTokenIdRoute:
     AuthIntegrationsWhatsappOnboardingTokenIdRoute,
