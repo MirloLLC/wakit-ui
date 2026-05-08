@@ -5,6 +5,6 @@ import StatsUsage from "./StatsUsage";
 export default function StatsCenter() {
   const pathname = useLocation({ select: (l) => l.pathname });
 
-  if (pathname === "/stats/usage") return <StatsUsage />;
+  if (pathname.startsWith("/stats/usage")) return <StatsUsage />;
   return <StatsQuotas />;
 }
