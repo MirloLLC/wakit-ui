@@ -353,6 +353,11 @@ export default function Message(props: UIMessage & { message: MessageRow }) {
   let text = false;
   let fixedWidth = false;
 
+  // Guard: skip rendering if content is empty or missing type
+  if (!props.message.content || !("type" in props.message.content)) {
+    return null;
+  }
+
   let headerText: string | undefined = undefined;
 
   if ("tool" in props.message.content && props.message.content.tool) {
