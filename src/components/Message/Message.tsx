@@ -114,7 +114,7 @@ export function TextMessage({
   const MAX_LENGTH = 500;
 
   // Calculate if content is "too long"
-  const isTooLong = type === "json" ? JSON.stringify(body).length > MAX_LENGTH : (body as string).length > MAX_LENGTH;
+  const isTooLong = body ? (type === "json" ? JSON.stringify(body).length > MAX_LENGTH : (body as string).length > MAX_LENGTH) : false;
 
   return (
     <>
