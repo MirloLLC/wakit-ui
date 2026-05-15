@@ -21,12 +21,25 @@ type Sender = {
 
 type NumberAnalysis = {
   phone: string;
-  total_messages: number;
-  outbound_messages: number;
-  inbound_messages: number;
-  twilio_cost: { monthly_total: number };
-  wakit_cost: { plan: { name: string; price: number }; monthly_total: number };
-  savings: { monthly: number; percentage: number };
+  messages: {
+    total: number;
+    outbound: number;
+    inbound: number;
+    outbound_templates: number;
+    outbound_freeform: number;
+  };
+  twilio_cost: {
+    twilio_fee: { per_message: number; total: number };
+    meta_fee: { templates: number; freeform: number; total: number };
+    monthly_total: number;
+  };
+  wakit_cost: {
+    plan: { name: string; price: number };
+    wakit_fee: number;
+    meta_fee: number;
+    monthly_total: number;
+  };
+  savings: { monthly: number; percentage: number; note: string };
 };
 
 type AnalysisResult = {
@@ -37,6 +50,11 @@ type AnalysisResult = {
     twilio_monthly: number;
     wakit_monthly: number;
     saved_monthly: number;
+    breakdown: {
+      twilio_platform_fee: number;
+      meta_fee_both: number;
+      note: string;
+    };
   };
 };
 
@@ -320,23 +338,43 @@ function MigrateTwilio() {
                 <div className="grid grid-cols-2 gap-[8px] text-[13px]">
                   <div>
                     <span className="text-muted-foreground">{t("Mensajes entrantes")}</span>
-                    <p className="font-medium">{num.inbound_messages.toLocaleString()}</p>
+                    <p className="font-medium">{num.messages.inbound.toLocaleString()}</p>
                   </div>
                   <div>
                     <span className="text-muted-foreground">{t("Mensajes salientes")}</span>
-                    <p className="font-medium">{num.outbound_messages.toLocaleString()}</p>
+                    <p className="font-medium">{num.messages.outbound.toLocaleString()}</p>
                   </div>
                   <div>
-                    <span className="text-muted-foreground">{t("Costo Twilio/mes")}</span>
-                    <p className="font-medium">${num.twilio_cost.monthly_total.toFixed(2)}</p>
+                    <span className="text-muted-foreground">{t("Templates")}</span>
+                    <p className="font-medium">{num.messages.outbound_templates.toLocaleString()}</p>
                   </div>
                   <div>
-                    <span className="text-muted-foreground">{t("Costo wakit/mes")}</span>
-                    <p className="font-medium">
-                      ${num.wakit_cost.monthly_total} ({num.wakit_cost.plan.name})
+                    <span className="text-muted-foreground">{t("Free-form")}</span>
+                    <p className="font-medium">{num.messages.outbound_freeform.toLocaleString()}</p>
+                  </div>
+                </div>
+
+                <div className="mt-[12px] pt-[12px] border-t border-border grid grid-cols-2 gap-[8px] text-[13px]">
+                  <div>
+                    <span className="text-muted-foreground">Twilio fee ($0.005/msg)</span>
+                    <p className="font-medium">${num.twilio_cost.twilio_fee.total.toFixed(2)}</p>
+                  </div>
+                  <div>
+                    <span className="text-muted-foreground">Meta fee ({t("igual en ambos")})</span>
+                    <p className="font-medium">${num.twilio_cost.meta_fee.total.toFixed(2)}</p>
+                  </div>
+                  <div>
+                    <span className="text-muted-foreground">{t("Total Twilio/mes")}</span>
+                    <p className="font-medium text-destructive">${num.twilio_cost.monthly_total.toFixed(2)}</p>
+                  </div>
+                  <div>
+                    <span className="text-muted-foreground">{t("Total wakit/mes")}</span>
+                    <p className="font-medium text-primary">
+                      ${num.wakit_cost.monthly_total.toFixed(2)} ({num.wakit_cost.plan.name})
                     </p>
                   </div>
                 </div>
+
                 {num.savings.monthly > 0 && (
                   <div className="mt-[8px] p-[8px] rounded-[6px] bg-primary/5 text-[12px]">
                     {t("Ahorro")}: <strong>${num.savings.monthly.toFixed(2)}/mes</strong> ({num.savings.percentage}%)
