@@ -8,6 +8,7 @@ import { WhatsAppOutlined } from "@ant-design/icons";
 import { ArrowRightLeft, Link, Plus } from "lucide-react";
 import type { JSX } from "react";
 import { formatPhoneNumber } from "@/utils/FormatUtils";
+import { usePlugins } from "@/hooks/usePlugins";
 
 export const Route = createFileRoute("/_auth/integrations/whatsapp/")({
   component: WhatsAppIndex,
@@ -16,6 +17,7 @@ export const Route = createFileRoute("/_auth/integrations/whatsapp/")({
 function WhatsAppIndex() {
   const { translate: t } = useTranslation();
   const navigate = useNavigate();
+  const plugins = usePlugins();
   const { data: integrations } = useOrganizationsAddresses();
 
   const whatsappIntegrations = integrations?.filter(
@@ -47,20 +49,22 @@ function WhatsAppIndex() {
               })
             }
           />
-          <SectionItem
-            title={t("Migrar")}
-            aside={
-              <div className="p-[8px]">
-                <ArrowRightLeft className="w-[24px] h-[24px] text-muted-foreground" />
-              </div>
-            }
-            onClick={() =>
-              navigate({
-                to: "/integrations/migrate",
-                hash: (prevHash) => prevHash!,
-              })
-            }
-          />
+          {plugins.migrateTwilio && (
+            <SectionItem
+              title={t("Migrar")}
+              aside={
+                <div className="p-[8px]">
+                  <ArrowRightLeft className="w-[24px] h-[24px] text-muted-foreground" />
+                </div>
+              }
+              onClick={() =>
+                navigate({
+                  to: "/integrations/migrate",
+                  hash: (prevHash) => prevHash!,
+                })
+              }
+            />
+          )}
           <SectionItem
             title={t("Invitaciones a terceros")}
             aside={
