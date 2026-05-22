@@ -4,6 +4,7 @@ import SectionItem from "@/components/SectionItem";
 import { useTranslation } from "@/hooks/useTranslation";
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { Building2, Users, Webhook, Key, CreditCard, MessageSquareText } from "lucide-react";
+import { usePlugins } from "@/hooks/usePlugins";
 
 export const Route = createFileRoute("/_auth/settings/")({
   component: SettingsIndex,
@@ -12,6 +13,7 @@ export const Route = createFileRoute("/_auth/settings/")({
 function SettingsIndex() {
   const { translate: t } = useTranslation();
   const navigate = useNavigate();
+  const plugins = usePlugins();
 
   return (
     <>
@@ -75,20 +77,22 @@ function SettingsIndex() {
               })
             }
           />
-          <SectionItem
-            title={t("Suscripción")}
-            aside={
-              <div className="p-[8px]">
-                <CreditCard className="w-[24px] h-[24px] text-muted-foreground" />
-              </div>
-            }
-            onClick={() =>
-              navigate({
-                to: "/stats/quotas",
-                hash: (prevHash) => prevHash!,
-              })
-            }
-          />
+          {plugins.stripe && (
+            <SectionItem
+              title={t("Suscripción")}
+              aside={
+                <div className="p-[8px]">
+                  <CreditCard className="w-[24px] h-[24px] text-muted-foreground" />
+                </div>
+              }
+              onClick={() =>
+                navigate({
+                  to: "/stats/quotas",
+                  hash: (prevHash) => prevHash!,
+                })
+              }
+            />
+          )}
           <SectionItem
             title={t("Claves API")}
             aside={
