@@ -133,7 +133,7 @@ function PlanSelector() {
             <span className="text-[24px] font-bold">Custom</span>
             <p className="text-[12px] opacity-60">{t("Para organizaciones que necesitan límites custom, SLAs y soporte dedicado.")}</p>
             <a
-              href="mailto:rafa@mirlo.com"
+              href="mailto:support@wakit.ai"
               className="mt-[4px] text-[12px] py-[6px] px-[16px] border border-background/30 rounded-full hover:bg-background/10 w-fit flex items-center gap-[6px]"
             >
               {t("Contactar ventas")} <ArrowUpRight className="w-[12px] h-[12px]" />

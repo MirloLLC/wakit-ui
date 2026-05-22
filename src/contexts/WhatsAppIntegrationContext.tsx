@@ -220,7 +220,7 @@ export function WhatsAppIntegrationProvider({
           }
         },
         {
-          config_id: import.meta.env.VITE_FB_LOGIN_CONFIG_ID, // Configuration ID obtained in https://developers.facebook.com/apps/629323992623834/business-login/configurations/?business_id=153181867762503
+          config_id: import.meta.env.VITE_FB_LOGIN_CONFIG_ID,
           response_type: "code", // Must be set to 'code' for System User access token
           override_default_response_type: true,
           extras: {
