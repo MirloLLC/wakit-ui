@@ -143,7 +143,8 @@ type BodyComponent = {
   type: "BODY";
   text: string;
   example?: {
-    body_text: [string[]];
+    body_text?: [string[]];
+    body_text_named_params?: Array<{ param_name: string; example: string }>;
   };
 };
 
