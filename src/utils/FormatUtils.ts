@@ -38,10 +38,19 @@ export function nameInitials(name: string): string {
 
 export function formatPhoneNumber(phoneNumber: string): string {
   try {
-    const parsed = parsePhoneNumberWithError("+" + phoneNumber, { extract: false });
+    const number = phoneNumber.startsWith("+") ? phoneNumber : "+" + phoneNumber;
+    const parsed = parsePhoneNumberWithError(number, { extract: false });
+    // Validate the parsed country makes sense — reject if the formatted number
+    // is longer than the input (library added digits, e.g. AR +549 prefix)
+    const digits = phoneNumber.replace(/\D/g, "");
+    const parsedDigits = parsed.number.replace(/\D/g, "");
+    if (parsedDigits.length > digits.length + 1) {
+      return "+" + digits;
+    }
     return parsed.formatInternational();
   } catch (error) {
-    return phoneNumber;
+    const digits = phoneNumber.replace(/\D/g, "");
+    return digits ? "+" + digits : phoneNumber;
   }
 }
 
