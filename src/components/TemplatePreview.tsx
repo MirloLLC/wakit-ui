@@ -82,14 +82,17 @@ export default function TemplatePreview({
     idx++;
   }
 
+  const namedParams = body.example?.body_text_named_params;
   idx = 1;
   for (const value of effectiveBodyValues) {
-    bodyPlaceholders = bodyPlaceholders.replaceAll(
-      `{{${idx}}}`,
-      editMode
-        ? value
-        : `<span id="${idx}" class="templateField templateBody" contentEditable>${value}</span>`,
-    );
+    const placeholder = editMode
+      ? value
+      : `<span id="${idx}" class="templateField templateBody" contentEditable>${value}</span>`;
+    // Replace both {{1}} (positional) and {{param_name}} (named)
+    bodyPlaceholders = bodyPlaceholders.replaceAll(`{{${idx}}}`, placeholder);
+    if (namedParams?.[idx - 1]) {
+      bodyPlaceholders = bodyPlaceholders.replaceAll(`{{${namedParams[idx - 1].param_name}}}`, placeholder);
+    }
     idx++;
   }
 
