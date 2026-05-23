@@ -1,23 +1,22 @@
-<h1 align="center">OpenBSP UI</h1>
+<h1 align="center">wakit UI</h1>
 <p align="center">
   <strong>Open-source WhatsApp Web interface</strong>
 </p>
 <p align="center">
-  Self-hostable, multi-tenant, and AI-agent ready. Built for <a href="https://github.com/matiasbattocchia/open-bsp-api">OpenBSP API</a>.
+  Self-hostable, multi-tenant, and AI-agent ready. Built for <a href="https://github.com/MirloLLC/wakit-api">wakit API</a>.
 </p>
 
 <p align="center">
-  <a href="https://web.openbsp.dev"><img src="https://img.shields.io/badge/%F0%9F%9A%80_try_it-web.openbsp.dev-C26A3D" alt="Try it"></a>&nbsp;
+  <a href="https://app.wakit.ai"><img src="https://img.shields.io/badge/%F0%9F%9A%80_try_it-app.wakit.ai-C26A3D" alt="Try it"></a>&nbsp;
   <a href="https://unlicense.org/"><img src="https://img.shields.io/badge/license-Unlicense-blue.svg" alt="License: Unlicense"></a>&nbsp;
-  <a href="https://github.com/matiasbattocchia/open-bsp-ui/stargazers"><img src="https://img.shields.io/github/stars/matiasbattocchia/open-bsp-ui" alt="GitHub Stars"></a>&nbsp;
-  <a href="https://github.com/matiasbattocchia/open-bsp-ui/commits/main"><img src="https://img.shields.io/github/last-commit/matiasbattocchia/open-bsp-ui" alt="Last Commit"></a>&nbsp;
-  <a href="https://chat.whatsapp.com/Ch6AwZizSDt5quzHodcYh5"><img src="https://img.shields.io/badge/Community-25D366?logo=whatsapp&logoColor=white" alt="Community"></a>
+  <a href="https://github.com/MirloLLC/wakit-ui/stargazers"><img src="https://img.shields.io/github/stars/MirloLLC/wakit-ui" alt="GitHub Stars"></a>&nbsp;
+  <a href="https://github.com/MirloLLC/wakit-ui/commits/main"><img src="https://img.shields.io/github/last-commit/MirloLLC/wakit-ui" alt="Last Commit"></a>&nbsp;
 </p>
 
 https://github.com/user-attachments/assets/1ef30dde-9de1-4f5a-856a-db34ca2e3063
 
-> [!NOTE]
-> This project is now backed by <a href="https://mirlo.com">Mirlo.com</a>, where I work, and is undergoing a rebranding. The project name is changing from **OpenBSP** to **wakit**.
+> 🚀
+> **Powering production-grade WhatsApp at [Mirlo.com](https://mirlo.com)** — managed instance at [app.wakit.ai](https://app.wakit.ai)
 
 ## Features
 
@@ -51,7 +50,7 @@ https://github.com/user-attachments/assets/1ef30dde-9de1-4f5a-856a-db34ca2e3063
 
 ## Deployment
 
-> [!NOTE]
+> 🚀
 > **Deploy in under 5 minutes** — no local environment required. This is an SPA that can be hosted on any static site hosting service.
 
 ### Cloudflare Pages
@@ -76,7 +75,7 @@ You are live! 🚀
 
 ### Local setup
 
-You need a running [OpenBSP API](https://github.com/matiasbattocchia/open-bsp-api) — either locally via `npx supabase start` or a hosted Supabase project.
+You need a running [wakit API](https://github.com/MirloLLC/wakit-api) — either locally via `npx supabase start` or a hosted Supabase project.
 
 ```bash
 npm install
@@ -115,4 +114,3 @@ The UI is written in Spanish (the default language) and supports English and Por
 
 ## Community
 
-Questions, ideas, or feedback? Join our [WhatsApp Community](https://chat.whatsapp.com/Ch6AwZizSDt5quzHodcYh5) or open an [issue](https://github.com/matiasbattocchia/open-bsp-ui/issues). We'd love to hear from you.

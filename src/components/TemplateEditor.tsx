@@ -59,7 +59,7 @@ export default function TemplateEditor({
       header: existingHeader?.text || "",
       headerVariable: existingHeader?.example?.header_text?.[0] || "",
       body: existingBody?.text || "",
-      bodyVariables: (existingBody?.example?.body_text[0] || []).map(
+      bodyVariables: (existingBody?.example?.body_text?.[0] || existingBody?.example?.body_text_named_params?.map((p: { example: string }) => p.example) || []).map(
         (v: string) => ({ value: v }),
       ),
       footer:
