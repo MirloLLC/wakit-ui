@@ -37,21 +37,8 @@ export function nameInitials(name: string): string {
 }
 
 export function formatPhoneNumber(phoneNumber: string): string {
-  try {
-    const number = phoneNumber.startsWith("+") ? phoneNumber : "+" + phoneNumber;
-    const parsed = parsePhoneNumberWithError(number, { extract: false });
-    // Validate the parsed country makes sense — reject if the formatted number
-    // is longer than the input (library added digits, e.g. AR +549 prefix)
-    const digits = phoneNumber.replace(/\D/g, "");
-    const parsedDigits = parsed.number.replace(/\D/g, "");
-    if (parsedDigits.length > digits.length + 1) {
-      return "+" + digits;
-    }
-    return parsed.formatInternational();
-  } catch (error) {
-    const digits = phoneNumber.replace(/\D/g, "");
-    return digits ? "+" + digits : phoneNumber;
-  }
+  const digits = phoneNumber.replace(/\D/g, "");
+  return digits ? "+" + digits : phoneNumber;
 }
 
 export function isValidPhoneNumber(phoneNumber: string): boolean {
@@ -72,15 +59,8 @@ export function isValidPhoneNumber(phoneNumber: string): boolean {
  */
 export function normalizePhoneNumber(phoneNumber: string): string {
   try {
-    const parsed = parsePhoneNumberWithError(phoneNumber, { extract: true });
-    // remove the +
-    let number = parsed.number.slice(1);
-
-    if (parsed.country === "AR" && !number.startsWith("549")) {
-      number = number.replace("54", "549");
-    }
-
-    return number
+    // Just strip non-digits and the leading +
+    return phoneNumber.replace(/\D/g, "");
   } catch {
     // Return cleaned version (digits only) if parsing fails
     return phoneNumber.replace(/\D/g, '');
