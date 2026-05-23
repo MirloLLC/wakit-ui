@@ -293,14 +293,23 @@ export default function ChatFooter() {
     }
 
     if (bodyVarValues.length && bodyVarCount > 0) {
+      const namedParams = templateBody.example?.body_text_named_params;
       let idx = 1;
       for (const value of bodyVarValues.slice(0, bodyVarCount)) {
         bodyContent = bodyContent.replaceAll(`{{${idx}}}`, value);
+        if (namedParams?.[idx - 1]) {
+          bodyContent = bodyContent.replaceAll(`{{${namedParams[idx - 1].param_name}}}`, value);
+        }
         idx++;
       }
+      const namedParamsForSend = templateBody.example?.body_text_named_params;
       components.push({
         type: "body",
-        parameters: bodyVarValues.slice(0, bodyVarCount).map((text) => ({ type: "text" as const, text })),
+        parameters: bodyVarValues.slice(0, bodyVarCount).map((text, i) => ({
+          type: "text" as const,
+          text,
+          ...(namedParamsForSend?.[i] ? { parameter_name: namedParamsForSend[i].param_name } : {}),
+        })),
       });
     }
 
@@ -373,10 +382,10 @@ export default function ChatFooter() {
 
     // Render header if present
     if (templateHead?.text && headVarCount > 0) {
-      const headerSegments = templateHead.text.split(/(\{\{\d+\}\})/);
+      const headerSegments = templateHead.text.split(/(\{\{[^}]+\}\})/);
       let headerIdx = 0;
       for (const seg of headerSegments) {
-        const match = seg.match(/^\{\{(\d+)\}\}$/);
+        const match = seg.match(/^\{\{[^}]+\}\}$/);
         if (match) {
           parts.push({ varIndex: headerIdx, isHeader: true });
           headerIdx++;
@@ -389,11 +398,11 @@ export default function ChatFooter() {
       parts.push(templateHead.text + "\n");
     }
 
-    // Render body
-    const segments = templateBody.text.split(/(\{\{\d+\}\})/);
+    // Render body — match both {{1}} (positional) and {{name}} (named) variables
+    const segments = templateBody.text.split(/(\{\{[^}]+\}\})/);
     let bodyIdx = 0;
     for (const seg of segments) {
-      const match = seg.match(/^\{\{(\d+)\}\}$/);
+      const match = seg.match(/^\{\{[^}]+\}\}$/);
       if (match) {
         parts.push({ varIndex: bodyIdx, isHeader: false });
         bodyIdx++;
