@@ -50,7 +50,7 @@ export default function TemplatePicker() {
   function select(template: TemplateData) {
     if (!activeConvId) return;
 
-    const bodyExamples = template.components.find((c) => c.type === "BODY")?.example?.body_text[0] || [];
+    const bodyExamples = template.components.find((c) => c.type === "BODY")?.example?.body_text?.[0] || [];
     const headExamples = template.components.find((c) => c.type === "HEADER")?.example?.header_text || [];
 
     setTemplateDraft(activeConvId, {

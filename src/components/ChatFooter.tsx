@@ -154,7 +154,7 @@ export default function ChatFooter() {
   const templateFoot = templateDraft?.components.find((c) => c.type === "FOOTER");
   const templateButtons = templateDraft?.components.find((c) => c.type === "BUTTONS");
 
-  const bodyExamples = templateBody?.example?.body_text[0] || [];
+  const bodyExamples = templateBody?.example?.body_text?.[0] || [];
   const headExamples = templateHead?.example?.header_text || [];
 
   // Count how many variables are in the template body/header
