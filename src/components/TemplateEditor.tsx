@@ -37,6 +37,7 @@ export default function TemplateEditor({
   const createMutation = useCreateTemplate();
   const updateMutation = useUpdateTemplate();
   const isPending = createMutation.isPending || updateMutation.isPending;
+  const mutationError = createMutation.error || updateMutation.error;
 
   const existingHeader =
     existingTemplate?.components.find((c) => c.type === "HEADER");
@@ -428,6 +429,11 @@ export default function TemplateEditor({
       </SectionBody>
 
       <SectionFooter>
+        {mutationError && (
+          <div className="w-full mb-[8px] p-[12px] rounded-[8px] bg-destructive/10 text-destructive text-[13px]">
+            {(mutationError as Error).message || t("Error al crear la plantilla")}
+          </div>
+        )}
         <Button
           type="submit"
           form="template-form"
