@@ -42,7 +42,11 @@ function AddMember() {
         },
       });
 
-      if (error) throw error;
+      // On non-2xx, supabase puts the body in data and a generic message in error
+      if (error) {
+        const detail = result?.error || error.message;
+        throw new Error(detail);
+      }
       if (result?.error) throw new Error(result.error);
       return result;
     },
