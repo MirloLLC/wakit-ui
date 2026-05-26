@@ -1,37 +1,81 @@
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import SectionHeader from "@/components/SectionHeader";
 import { useTranslation } from "@/hooks/useTranslation";
-import { useCreateAgent, useCurrentAgent } from "@/queries/useAgents";
-import { type HumanAgentInsert } from "@/supabase/client";
+import { useCurrentAgent } from "@/queries/useAgents";
 import { useForm } from "react-hook-form";
 import SectionBody from "@/components/SectionBody";
 import SectionFooter from "@/components/SectionFooter";
 import Button from "@/components/Button";
 import { useCurrentOrganization } from "@/queries/useOrganizations";
 import SelectField from "@/components/SelectField";
+import useBoundStore from "@/stores/useBoundStore";
+import { supabase } from "@/supabase/client";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { queryKeys } from "@/queries/queryKeys";
+import { useState } from "react";
 
 export const Route = createFileRoute("/_auth/settings/members/new")({
   component: AddMember,
 });
 
+interface InviteForm {
+  name: string;
+  email: string;
+  role: string;
+}
+
 function AddMember() {
   const { translate: t } = useTranslation();
   const navigate = useNavigate();
-  const createAgent = useCreateAgent();
   const { data: agent } = useCurrentAgent();
   const { data: organization } = useCurrentOrganization();
+  const activeOrgId = useBoundStore((state) => state.ui.activeOrgId);
+  const queryClient = useQueryClient();
   const isOwner = agent?.extra?.role === "owner";
+  const [feedback, setFeedback] = useState<{ type: "success" | "error"; message: string } | null>(null);
+
+  const inviteMutation = useMutation({
+    mutationFn: async (data: InviteForm) => {
+      const { data: result, error } = await supabase.functions.invoke("invite", {
+        body: {
+          organization_id: activeOrgId,
+          email: data.email,
+          role: data.role,
+        },
+      });
+
+      if (error) throw error;
+      if (result?.error) throw new Error(result.error);
+      return result;
+    },
+    onSuccess: (result) => {
+      queryClient.invalidateQueries({ queryKey: queryKeys.agents.all(activeOrgId!) });
+      setFeedback({
+        type: "success",
+        message: result.email_sent
+          ? t("Invitación enviada por correo electrónico")
+          : t("Invitación creada — el usuario la verá al iniciar sesión"),
+      });
+      setTimeout(() => {
+        navigate({ to: "/settings/members", hash: (prev) => prev! });
+      }, 2000);
+    },
+    onError: (error) => {
+      setFeedback({
+        type: "error",
+        message: (error as Error).message || t("Error al enviar la invitación"),
+      });
+    },
+  });
 
   const {
     register,
     handleSubmit,
     control,
     formState: { isValid, isDirty },
-  } = useForm<HumanAgentInsert>({
+  } = useForm<InviteForm>({
     defaultValues: {
-      extra: {
-        role: "member",
-      },
+      role: "member",
     },
   });
 
@@ -42,27 +86,10 @@ function AddMember() {
       <SectionBody>
         <form
           id="create-member-form"
-          onSubmit={handleSubmit(data => createAgent.mutate(
-            {
-              ...data,
-              ai: false,
-              extra: {
-                role: data.extra!.role!,
-                invitation: {
-                  organization_name: organization?.name || "",
-                  email: data.extra!.invitation!.email!,
-                  status: "pending"
-                }
-              }
-            },
-            {
-              onSuccess: (agent) =>
-                navigate({
-                  to: `/settings/members/${agent!.id}`,
-                  hash: (prevHash) => prevHash!,
-                }),
-            }),
-          )}
+          onSubmit={handleSubmit((data) => {
+            setFeedback(null);
+            inviteMutation.mutate(data);
+          })}
         >
           <fieldset disabled={!isOwner} className="contents">
             <p>
@@ -70,17 +97,23 @@ function AddMember() {
             </p>
 
             <label>
-              <div className="label">{t("Nombre")}</div>
+              <div className="label">{t("Correo electrónico")}</div>
               <input
+                type="email"
                 className="text"
-                placeholder={t("Nombre del miembro")}
-                {...register("name", { required: true })}
+                placeholder={t("usuario@ejemplo.com")}
+                {...register("email", {
+                  required: true,
+                  pattern: {
+                    value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
+                    message: "Invalid email address",
+                  },
+                })}
               />
             </label>
 
-
             <SelectField
-              name="extra.role"
+              name="role"
               control={control}
               label={t("Rol")}
               options={[
@@ -90,32 +123,28 @@ function AddMember() {
               ]}
               required
             />
-
-            <label>
-              <div className="label">{t("Correo electrónico")}</div>
-              <input
-                type="email"
-                className="text"
-                placeholder={t("usuario@ejemplo.com")}
-                {...register("extra.invitation.email", {
-                  required: true, pattern: {
-                    value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
-                    message: "Invalid email address"
-                  }
-                })}
-              />
-            </label>
           </fieldset>
         </form>
       </SectionBody>
 
       <SectionFooter>
+        {feedback && (
+          <div
+            className={`w-full mb-[8px] p-[12px] rounded-[8px] text-[13px] ${
+              feedback.type === "success"
+                ? "bg-primary/10 text-primary"
+                : "bg-destructive/10 text-destructive"
+            }`}
+          >
+            {feedback.message}
+          </div>
+        )}
         <Button
           form="create-member-form"
           type="submit"
           disabled={!isOwner}
           invalid={!isValid || !isDirty}
-          loading={createAgent.isPending}
+          loading={inviteMutation.isPending}
           disabledReason={t("Requiere permisos de propietario")}
           className="primary"
         >
