@@ -6,7 +6,6 @@ import { useForm } from "react-hook-form";
 import SectionBody from "@/components/SectionBody";
 import SectionFooter from "@/components/SectionFooter";
 import Button from "@/components/Button";
-import { useCurrentOrganization } from "@/queries/useOrganizations";
 import SelectField from "@/components/SelectField";
 import useBoundStore from "@/stores/useBoundStore";
 import { supabase } from "@/supabase/client";
@@ -28,7 +27,6 @@ function AddMember() {
   const { translate: t } = useTranslation();
   const navigate = useNavigate();
   const { data: agent } = useCurrentAgent();
-  const { data: organization } = useCurrentOrganization();
   const activeOrgId = useBoundStore((state) => state.ui.activeOrgId);
   const queryClient = useQueryClient();
   const isOwner = agent?.extra?.role === "owner";
