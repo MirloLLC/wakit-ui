@@ -338,19 +338,19 @@ function MigrateTwilio() {
                 <div className="grid grid-cols-2 gap-[8px] text-[13px]">
                   <div>
                     <span className="text-muted-foreground">{t("Mensajes entrantes")}</span>
-                    <p className="font-medium">{num.messages.inbound.toLocaleString()}</p>
+                    <p className="font-medium">{(num.messages?.inbound ?? 0).toLocaleString()}</p>
                   </div>
                   <div>
                     <span className="text-muted-foreground">{t("Mensajes salientes")}</span>
-                    <p className="font-medium">{num.messages.outbound.toLocaleString()}</p>
+                    <p className="font-medium">{(num.messages?.outbound ?? 0).toLocaleString()}</p>
                   </div>
                   <div>
                     <span className="text-muted-foreground">{t("Templates")}</span>
-                    <p className="font-medium">{num.messages.outbound_templates.toLocaleString()}</p>
+                    <p className="font-medium">{(num.messages?.outbound_templates ?? 0).toLocaleString()}</p>
                   </div>
                   <div>
                     <span className="text-muted-foreground">{t("Free-form")}</span>
-                    <p className="font-medium">{num.messages.outbound_freeform.toLocaleString()}</p>
+                    <p className="font-medium">{(num.messages?.outbound_freeform ?? 0).toLocaleString()}</p>
                   </div>
                 </div>
 
