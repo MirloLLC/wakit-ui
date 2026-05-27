@@ -34,7 +34,11 @@ export const Route = createRootRoute({
       });
     }
 
-    if (!user && !location.pathname.startsWith("/login") && !location.pathname.startsWith("/signup") && !location.pathname.startsWith("/onboard")) {
+    // Don't redirect to login if the URL has an access_token hash (magic link / invite callback)
+    // Let Supabase client process the token first
+    const hasAuthToken = location.href.includes("access_token=") || location.href.includes("type=invite");
+
+    if (!user && !hasAuthToken && !location.pathname.startsWith("/login") && !location.pathname.startsWith("/signup") && !location.pathname.startsWith("/onboard")) {
       throw redirect({
         to: "/login",
         search: {
