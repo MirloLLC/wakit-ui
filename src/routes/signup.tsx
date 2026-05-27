@@ -7,6 +7,10 @@ import { GoogleOutlined, GithubOutlined } from "@ant-design/icons";
 type OAuthProvider = "google" | "github";
 
 export const Route = createFileRoute("/signup")({
+  validateSearch: (search): { invite?: boolean; org?: string } => ({
+    invite: search.invite === "true" || search.invite === true ? true : undefined,
+    org: (search.org as string) || undefined,
+  }),
   component: Signup,
 });
 
@@ -16,6 +20,7 @@ function Signup() {
   const [confirmPassword, setConfirmPassword] = useState("");
   const [message, setMessage] = useState("");
   const [success, setSuccess] = useState(false);
+  const { invite, org } = Route.useSearch();
 
   const { translate: t } = useTranslation();
 
@@ -64,6 +69,12 @@ function Signup() {
       </div>
 
       <div className="flex flex-col gap-3 w-[250px]">
+        {invite && org && (
+          <div className="bg-primary/10 text-primary text-sm p-3 rounded-lg text-center">
+            {t("Te invitaron a")} <strong>{decodeURIComponent(org)}</strong>. {t("Crea tu cuenta para unirte.")}
+          </div>
+        )}
+
         <button
           type="button"
           className="primary bg-blue-500 hover:bg-blue-400 text-white w-full border-none"
