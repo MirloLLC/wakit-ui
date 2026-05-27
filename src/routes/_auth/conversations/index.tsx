@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { createFileRoute } from "@tanstack/react-router";
 import ChatList from "@/components/ChatList";
 import ChatSearch from "@/components/ChatSearch";
@@ -20,6 +21,7 @@ function Conversations() {
   const { data: invitations } = useInvitations();
   const queryClient = useQueryClient();
   const updateAgent = useUpdateAgent();
+  const [actionError, setActionError] = useState<{ agentId: string; message: string } | null>(null);
 
   const roles: Record<string, string> = {
     "owner": t("Propietario"),
@@ -28,6 +30,7 @@ function Conversations() {
   };
 
   const handleInvitationAction = (agentId: string, status: "accepted" | "rejected") => {
+    setActionError(null);
     updateAgent.mutate({
       id: agentId,
       extra: {
@@ -39,7 +42,10 @@ function Conversations() {
       onSuccess: () => {
         queryClient.invalidateQueries({ queryKey: queryKeys.agents.invitations() })
         queryClient.invalidateQueries({ queryKey: queryKeys.organizations.all() })
-      }
+      },
+      onError: (err) => {
+        setActionError({ agentId, message: err.message });
+      },
     });
   };
 
@@ -87,6 +93,14 @@ function Conversations() {
                   </div>
                 }
               />
+              {actionError?.agentId === invitation.id && (
+                <p
+                  role="alert"
+                  className="pl-[10px] pr-[15px] pb-[10px] text-[12px] text-destructive"
+                >
+                  {t("No se pudo procesar la invitación")}: {actionError.message}
+                </p>
+              )}
             </div>
           ))}
         </div>
