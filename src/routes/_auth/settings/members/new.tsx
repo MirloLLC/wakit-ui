@@ -32,6 +32,14 @@ function AddMember() {
   const isOwner = agent?.extra?.role === "owner";
   const [feedback, setFeedback] = useState<{ type: "success" | "error"; message: string } | null>(null);
 
+  const errorMessages: Record<string, string> = {
+    "User must create an account before being invited": t("El usuario debe crear su cuenta antes de ser invitado"),
+    "An invitation for this email already exists in this organization": t("Ya existe una invitación para este correo en esta organización"),
+  };
+
+  const translateError = (msg: string) =>
+    errorMessages[msg] || t("Error al enviar la invitación");
+
   const inviteMutation = useMutation({
     mutationFn: async (data: InviteForm) => {
       const { data: result, error } = await supabase.functions.invoke("invite", {
@@ -59,7 +67,7 @@ function AddMember() {
     onError: (error) => {
       setFeedback({
         type: "error",
-        message: (error as Error).message || t("Error al enviar la invitación"),
+        message: translateError((error as Error).message),
       });
     },
   });

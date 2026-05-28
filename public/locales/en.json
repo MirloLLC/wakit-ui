@@ -351,6 +351,10 @@
   "¡Credenciales inválidas!": "Invalid credentials!",
   "Últimos 12 meses": "Last 12 months",
   "Últimos 14 días": "Last 14 days",
+  "El usuario debe crear su cuenta antes de ser invitado": "User must create an account before being invited",
+  "Ya existe una invitación para este correo en esta organización": "An invitation for this email already exists in this organization",
+  "Error al enviar la invitación": "Error sending invitation",
+  "Invitación creada — el usuario la verá al iniciar sesión": "Invitation created — user will see it on login",
   "¿No tienes cuenta?": "Don't have an account?",
   "¿Ya tienes cuenta?": "Already have an account?"
 }
