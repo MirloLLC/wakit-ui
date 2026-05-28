@@ -25,23 +25,27 @@ function Signup() {
 
   const { translate: t } = useTranslation();
 
-  // When landing with a magic link token (#access_token=...), the account is
-  // already created by inviteUserByEmail. Wait for Supabase to process the
-  // token and redirect — don't show the signup form.
+  // When landing with a magic link token (#access_token=...), the account was
+  // already created by inviteUserByEmail. Show "Procesando..." while the
+  // Supabase client exchanges the token. useAuth() in __root.tsx handles the
+  // SIGNED_IN redirect. Fallback to form after 5s if token is invalid.
   const hasToken = window.location.hash.includes("access_token");
   const [processing, setProcessing] = useState(hasToken);
 
   useEffect(() => {
     if (!hasToken) return;
-    supabase.auth.getSession().then(({ data }) => {
-      if (data.session) {
+    const timeout = setTimeout(() => setProcessing(false), 5000);
+    const { data: { subscription } } = supabase.auth.onAuthStateChange((event) => {
+      if (event === "SIGNED_IN") {
+        clearTimeout(timeout);
         navigate({ to: "/" });
-      } else {
-        // Token invalid/expired — let user sign up manually
-        setProcessing(false);
       }
     });
-  }, [hasToken]);
+    return () => {
+      clearTimeout(timeout);
+      subscription.unsubscribe();
+    };
+  }, []);
 
   async function handleSignUpWithOauth(provider: OAuthProvider) {
     await supabase.auth.signInWithOAuth({
