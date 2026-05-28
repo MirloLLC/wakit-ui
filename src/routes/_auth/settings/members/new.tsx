@@ -42,9 +42,14 @@ function AddMember() {
         },
       });
 
-      // On non-2xx, supabase puts the body in data and a generic message in error
+      // On non-2xx, supabase puts a generic message in error.
+      // The actual JSON body is in error.context (Response object).
       if (error) {
-        const detail = result?.error || error.message;
+        let detail = error.message;
+        try {
+          const body = result || await (error as { context?: Response }).context?.json();
+          if (body?.error) detail = body.error;
+        } catch { /* use default */ }
         throw new Error(detail);
       }
       if (result?.error) throw new Error(result.error);
@@ -54,9 +59,7 @@ function AddMember() {
       queryClient.invalidateQueries({ queryKey: queryKeys.agents.all(activeOrgId!) });
       setFeedback({
         type: "success",
-        message: result.email_sent
-          ? t("Invitación enviada por correo electrónico")
-          : t("Invitación creada — el usuario la verá al iniciar sesión"),
+        message: t("Invitación creada — el usuario la verá al iniciar sesión"),
       });
       setTimeout(() => {
         navigate({ to: "/settings/members", hash: (prev) => prev! });
