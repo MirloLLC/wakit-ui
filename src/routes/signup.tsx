@@ -26,23 +26,37 @@ function Signup() {
 
   const { translate: t } = useTranslation();
 
-  // Redirect authenticated users away from signup.
-  // When inviteUserByEmail magic link works, Supabase client processes the
-  // #access_token hash before React renders. The user is authenticated but
-  // the store may not be updated yet. Check both store and session.
   const user = useBoundStore((state) => state.ui.user);
   const [checking, setChecking] = useState(true);
 
+  console.log("[signup] render", {
+    hash: window.location.hash.substring(0, 50),
+    user: user?.email || null,
+    checking,
+    invite,
+    org,
+  });
+
   useEffect(() => {
+    console.log("[signup] effect fired, user:", user?.email || null);
+
     if (user) {
+      console.log("[signup] user in store → navigating to /");
       navigate({ to: "/" });
       return;
     }
-    // Store might not be updated yet — check Supabase session directly
+
+    console.log("[signup] no user in store, checking getSession()...");
     supabase.auth.getSession().then(({ data }) => {
+      console.log("[signup] getSession result:", {
+        hasSession: !!data.session,
+        email: data.session?.user?.email || null,
+      });
       if (data.session) {
+        console.log("[signup] session exists → navigating to /");
         navigate({ to: "/" });
       } else {
+        console.log("[signup] no session → showing form");
         setChecking(false);
       }
     });
