@@ -42,16 +42,7 @@ function AddMember() {
         },
       });
 
-      // On non-2xx, supabase puts a generic message in error.
-      // The actual JSON body is in error.context (Response object).
-      if (error) {
-        let detail = error.message;
-        try {
-          const body = result || await (error as { context?: Response }).context?.json();
-          if (body?.error) detail = body.error;
-        } catch { /* use default */ }
-        throw new Error(detail);
-      }
+      if (error) throw new Error(error.message);
       if (result?.error) throw new Error(result.error);
       return result;
     },
