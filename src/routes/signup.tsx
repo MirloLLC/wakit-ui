@@ -26,25 +26,27 @@ function Signup() {
 
   const { translate: t } = useTranslation();
 
-  // When landing with a magic link token (#access_token=...), the account was
-  // already created by inviteUserByEmail. Show "Procesando..." while the
-  // Supabase client exchanges the token. Redirect once the user appears in
-  // the store (set by useAuth in __root.tsx). Fallback to form after 5s.
-  const hasToken = window.location.hash.includes("access_token");
-  const [processing, setProcessing] = useState(hasToken);
+  // Redirect authenticated users away from signup.
+  // When inviteUserByEmail magic link works, Supabase client processes the
+  // #access_token hash before React renders. The user is authenticated but
+  // the store may not be updated yet. Check both store and session.
   const user = useBoundStore((state) => state.ui.user);
+  const [checking, setChecking] = useState(true);
 
   useEffect(() => {
     if (user) {
       navigate({ to: "/" });
+      return;
     }
+    // Store might not be updated yet — check Supabase session directly
+    supabase.auth.getSession().then(({ data }) => {
+      if (data.session) {
+        navigate({ to: "/" });
+      } else {
+        setChecking(false);
+      }
+    });
   }, [user]);
-
-  useEffect(() => {
-    if (!hasToken) return;
-    const timeout = setTimeout(() => setProcessing(false), 5000);
-    return () => clearTimeout(timeout);
-  }, []);
 
   async function handleSignUpWithOauth(provider: OAuthProvider) {
     await supabase.auth.signInWithOAuth({
@@ -94,11 +96,11 @@ function Signup() {
         {invite && org && (
           <div className="bg-primary/10 text-primary text-sm p-3 rounded-lg text-center">
             {t("Te invitaron a")} <strong>{decodeURIComponent(org)}</strong>.{" "}
-            {processing ? t("Procesando invitación...") : t("Crea tu cuenta para unirte.")}
+            {checking ? t("Procesando invitación...") : t("Crea tu cuenta para unirte.")}
           </div>
         )}
 
-        {processing ? (
+        {checking ? (
           <div className="text-center text-sm text-muted-foreground py-8">
             {t("Procesando invitación...")}
           </div>
