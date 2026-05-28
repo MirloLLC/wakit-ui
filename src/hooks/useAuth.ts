@@ -22,7 +22,7 @@ export function useAuth() {
     const {
       data: { subscription },
     } = supabase.auth.onAuthStateChange((event, session) => {
-      console.log("Auth event:", event);
+      console.log("[useAuth] event:", event, "session:", session?.user?.email || null);
 
       // There is a SIGNED_IN event at tab focus. Checking if the user is
       // already logged in to avoid navigating to "/" or "/login".
@@ -31,11 +31,16 @@ export function useAuth() {
       const user = session?.user ?? null;
       setUser(user);
 
+      console.log("[useAuth] loggedUser:", loggedUser?.email || null, "user:", user?.email || null, "redirect:", redirect);
+
       // Signed in
       if (!loggedUser && user && event === "SIGNED_IN") {
+        console.log("[useAuth] SIGNED_IN → navigating to:", redirect || "/");
         navigate({
           to: redirect || "/",
         });
+      } else if (user && event === "SIGNED_IN") {
+        console.log("[useAuth] SIGNED_IN but loggedUser already set, skipping navigate");
       }
 
       // Signed out
