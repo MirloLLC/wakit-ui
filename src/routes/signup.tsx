@@ -3,6 +3,7 @@ import { useState, useEffect } from "react";
 import { supabase } from "@/supabase/client";
 import { useTranslation } from "@/hooks/useTranslation";
 import { GoogleOutlined, GithubOutlined } from "@ant-design/icons";
+import useBoundStore from "@/stores/useBoundStore";
 
 type OAuthProvider = "google" | "github";
 
@@ -27,24 +28,22 @@ function Signup() {
 
   // When landing with a magic link token (#access_token=...), the account was
   // already created by inviteUserByEmail. Show "Procesando..." while the
-  // Supabase client exchanges the token. useAuth() in __root.tsx handles the
-  // SIGNED_IN redirect. Fallback to form after 5s if token is invalid.
+  // Supabase client exchanges the token. Redirect once the user appears in
+  // the store (set by useAuth in __root.tsx). Fallback to form after 5s.
   const hasToken = window.location.hash.includes("access_token");
   const [processing, setProcessing] = useState(hasToken);
+  const user = useBoundStore((state) => state.ui.user);
+
+  useEffect(() => {
+    if (user) {
+      navigate({ to: "/" });
+    }
+  }, [user]);
 
   useEffect(() => {
     if (!hasToken) return;
     const timeout = setTimeout(() => setProcessing(false), 5000);
-    const { data: { subscription } } = supabase.auth.onAuthStateChange((event) => {
-      if (event === "SIGNED_IN") {
-        clearTimeout(timeout);
-        navigate({ to: "/" });
-      }
-    });
-    return () => {
-      clearTimeout(timeout);
-      subscription.unsubscribe();
-    };
+    return () => clearTimeout(timeout);
   }, []);
 
   async function handleSignUpWithOauth(provider: OAuthProvider) {
