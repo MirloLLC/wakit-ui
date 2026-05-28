@@ -98,6 +98,16 @@ function AddWebhook() {
                 {...register("token")}
               />
             </label>
+
+            <label>
+              <div className="label">{t("Dirección de organización (opcional)")}</div>
+              <input
+                className="text"
+                type="text"
+                placeholder={t("Vacío = aplica a todas las direcciones")}
+                {...register("organization_address")}
+              />
+            </label>
           </fieldset>
         </form>
       </SectionBody>

@@ -52,9 +52,15 @@ export function useCreateWebhook() {
     mutationFn: async (data: WebhookInsert) => {
       if (!orgId) throw new Error("No active organization");
 
+      const payload = {
+        ...data,
+        organization_address: data.organization_address === "" ? null : data.organization_address,
+        organization_id: orgId,
+      };
+
       const { data: webhook } = await supabase
         .from("webhooks")
-        .insert({ ...data, organization_id: orgId })
+        .insert(payload)
         .select()
         .single()
         .throwOnError();
@@ -81,9 +87,14 @@ export function useUpdateWebhook() {
       if (!orgId) throw new Error("No active organization");
       if (!data.id) throw new Error("No webhook id");
 
+      const payload = {
+        ...data,
+        organization_address: data.organization_address === "" ? null : data.organization_address,
+      };
+
       const { data: webhook } = await supabase
         .from("webhooks")
-        .update(data)
+        .update(payload)
         .eq("id", data.id)
         .select()
         .single()
