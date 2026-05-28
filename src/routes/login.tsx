@@ -7,10 +7,6 @@ import { GoogleOutlined, GithubOutlined } from "@ant-design/icons";
 type OAuthProvider = "google" | "github";
 
 export const Route = createFileRoute("/login")({
-  validateSearch: (search): { redirect?: string; error_code?: string } => ({
-    redirect: (search.redirect as string) || undefined,
-    error_code: (search.error_code as string) || undefined,
-  }),
   component: Login,
 });
 
@@ -18,7 +14,7 @@ function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [message, setMessage] = useState("");
-  const { redirect, error_code } = Route.useSearch();
+  const { redirect } = Route.useSearch();
 
   const { translate: t } = useTranslation();
 
@@ -54,15 +50,6 @@ function Login() {
       </div>
 
       <div className="flex flex-col gap-3 w-[250px]">
-        {error_code === "otp_expired" && (
-          <div className="bg-amber-100 text-amber-800 dark:bg-amber-900/30 dark:text-amber-200 text-sm p-3 rounded-lg text-center">
-            {t("El enlace de invitación expiró.")}{" "}
-            <Link to="/signup" className="underline font-medium">
-              {t("Crea tu cuenta aquí")}
-            </Link>
-          </div>
-        )}
-
         <button
           type="button"
           className="primary bg-blue-500 hover:bg-blue-400 text-white w-full border-none"
