@@ -1,5 +1,5 @@
-import { createFileRoute, Link } from "@tanstack/react-router";
-import { useState } from "react";
+import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
+import { useState, useEffect } from "react";
 import { supabase } from "@/supabase/client";
 import { useTranslation } from "@/hooks/useTranslation";
 import { GoogleOutlined, GithubOutlined } from "@ant-design/icons";
@@ -21,8 +21,27 @@ function Signup() {
   const [message, setMessage] = useState("");
   const [success, setSuccess] = useState(false);
   const { invite, org } = Route.useSearch();
+  const navigate = useNavigate();
 
   const { translate: t } = useTranslation();
+
+  // When landing with a magic link token (#access_token=...), the account is
+  // already created by inviteUserByEmail. Wait for Supabase to process the
+  // token and redirect — don't show the signup form.
+  const hasToken = window.location.hash.includes("access_token");
+  const [processing, setProcessing] = useState(hasToken);
+
+  useEffect(() => {
+    if (!hasToken) return;
+    supabase.auth.getSession().then(({ data }) => {
+      if (data.session) {
+        navigate({ to: "/" });
+      } else {
+        // Token invalid/expired — let user sign up manually
+        setProcessing(false);
+      }
+    });
+  }, [hasToken]);
 
   async function handleSignUpWithOauth(provider: OAuthProvider) {
     await supabase.auth.signInWithOAuth({
@@ -71,81 +90,90 @@ function Signup() {
       <div className="flex flex-col gap-3 w-[250px]">
         {invite && org && (
           <div className="bg-primary/10 text-primary text-sm p-3 rounded-lg text-center">
-            {t("Te invitaron a")} <strong>{decodeURIComponent(org)}</strong>. {t("Crea tu cuenta para unirte.")}
+            {t("Te invitaron a")} <strong>{decodeURIComponent(org)}</strong>.{" "}
+            {processing ? t("Procesando invitación...") : t("Crea tu cuenta para unirte.")}
           </div>
         )}
 
-        <button
-          type="button"
-          className="primary bg-blue-500 hover:bg-blue-400 text-white w-full border-none"
-          onClick={() => handleSignUpWithOauth("google")}
-        >
-          <GoogleOutlined /> {t("Continuar con Google")}
-        </button>
-
-        <button
-          type="button"
-          className="primary bg-gray-900 hover:bg-gray-800 text-white w-full border-none"
-          onClick={() => handleSignUpWithOauth("github")}
-        >
-          <GithubOutlined /> {t("Continuar con GitHub")}
-        </button>
-
-        <div className="border-b border-border w-full" />
-
-        {success ? (
-          <div className="text-center text-sm text-muted-foreground py-4">
-            {message}
+        {processing ? (
+          <div className="text-center text-sm text-muted-foreground py-8">
+            {t("Procesando invitación...")}
           </div>
         ) : (
-          <form onSubmit={handleSignUpWithEmail} className="login-form">
-            <label>
-              <div className="label">{t("Correo electrónico")}</div>
-              <input
-                className="text"
-                placeholder="you@company.com"
-                type="email"
-                required
-                onChange={(e) => setEmail(e.target.value)}
-                value={email}
-              />
-            </label>
-
-            <label>
-              <div className="label">{t("Contraseña")}</div>
-              <input
-                className="text"
-                placeholder="******"
-                type="password"
-                required
-                onChange={(e) => setPassword(e.target.value)}
-                value={password}
-              />
-            </label>
-
-            <label>
-              <div className="label">{t("Confirmar contraseña")}</div>
-              <input
-                className="text"
-                placeholder="******"
-                type="password"
-                required
-                onChange={(e) => setConfirmPassword(e.target.value)}
-                value={confirmPassword}
-              />
-            </label>
-
-            {message && (
-              <div className="self-center text-destructive text-md">{message}</div>
-            )}
+          <>
+            <button
+              type="button"
+              className="primary bg-blue-500 hover:bg-blue-400 text-white w-full border-none"
+              onClick={() => handleSignUpWithOauth("google")}
+            >
+              <GoogleOutlined /> {t("Continuar con Google")}
+            </button>
 
             <button
-              type="submit"
-              className="primary w-full mt-[16px]"
+              type="button"
+              className="primary bg-gray-900 hover:bg-gray-800 text-white w-full border-none"
+              onClick={() => handleSignUpWithOauth("github")}
             >
-              {t("Crear cuenta")}
+              <GithubOutlined /> {t("Continuar con GitHub")}
             </button>
-          </form>
+
+            <div className="border-b border-border w-full" />
+
+            {success ? (
+              <div className="text-center text-sm text-muted-foreground py-4">
+                {message}
+              </div>
+            ) : (
+              <form onSubmit={handleSignUpWithEmail} className="login-form">
+                <label>
+                  <div className="label">{t("Correo electrónico")}</div>
+                  <input
+                    className="text"
+                    placeholder="you@company.com"
+                    type="email"
+                    required
+                    onChange={(e) => setEmail(e.target.value)}
+                    value={email}
+                  />
+                </label>
+
+                <label>
+                  <div className="label">{t("Contraseña")}</div>
+                  <input
+                    className="text"
+                    placeholder="******"
+                    type="password"
+                    required
+                    onChange={(e) => setPassword(e.target.value)}
+                    value={password}
+                  />
+                </label>
+
+                <label>
+                  <div className="label">{t("Confirmar contraseña")}</div>
+                  <input
+                    className="text"
+                    placeholder="******"
+                    type="password"
+                    required
+                    onChange={(e) => setConfirmPassword(e.target.value)}
+                    value={confirmPassword}
+                  />
+                </label>
+
+                {message && (
+                  <div className="self-center text-destructive text-md">{message}</div>
+                )}
+
+                <button
+                  type="submit"
+                  className="primary w-full mt-[16px]"
+                >
+                  {t("Crear cuenta")}
+                </button>
+              </form>
+            )}
+          </>
         )}
 
         <div className="text-center text-sm text-muted-foreground">
