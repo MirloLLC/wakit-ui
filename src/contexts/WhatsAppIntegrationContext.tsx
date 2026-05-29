@@ -61,6 +61,7 @@ type WhatsAppIntegrationContextType = {
   launchWhatsAppSignup: (
     onSuccess: (phone_number_id: string) => void,
     setLoading: (loading: boolean) => void,
+    onError?: (message: string) => void,
   ) => void;
 };
 
@@ -175,6 +176,7 @@ export function WhatsAppIntegrationProvider({
     (
       onSuccess: (phone_number_id: string) => void,
       setLoading: (loading: boolean) => void,
+      onError?: (message: string) => void,
     ) => {
       // Launch Facebook login
       (window as any).FB.login(
@@ -209,8 +211,17 @@ export function WhatsAppIntegrationProvider({
               .then(() => {
                 onSuccess(sessionInfo.phone_number_id || "");
               })
-              .catch((error: Error) => {
+              .catch(async (error: any) => {
                 console.error("Signup failed:", error);
+                // Extract the actual error message from the response
+                let message = error?.message || "Unknown error";
+                try {
+                  const body = await error?.context?.json?.();
+                  if (body?.error?.message) message = body.error.message;
+                  else if (body?.error?.error_data?.details) message = body.error.error_data.details;
+                  else if (body?.message) message = body.message;
+                } catch { /* use default */ }
+                onError?.(message);
               })
               .finally(() => {
                 setLoading(false);
