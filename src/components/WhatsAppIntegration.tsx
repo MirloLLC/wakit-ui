@@ -14,20 +14,35 @@ export default function WhatsAppIntegration({
   const context = useContext(WhatsAppIntegrationContext);
   const orgId = useBoundStore((state) => state.ui.activeOrgId);
   const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
   const { data: agent } = useCurrentAgent();
   const isOwner = agent?.extra?.role === "owner";
 
   if (!context?.launchWhatsAppSignup) return null;
 
   return (
-    <Button
-      disabled={!orgId || !isOwner}
-      disabledReason={!isOwner ? t("Requiere permisos de propietario") : undefined}
-      loading={loading}
-      className="primary bg-[#4267b2] hover:bg-[#4267b2]/90 text-white w-full"
-      onClick={() => context.launchWhatsAppSignup(onSuccess || (() => { }), setLoading)}
-    >
-      {t("Continuar con Facebook")}
-    </Button>
+    <>
+      {error && (
+        <div className="bg-destructive/10 text-destructive text-[13px] p-3 rounded-lg">
+          {error}
+        </div>
+      )}
+      <Button
+        disabled={!orgId || !isOwner}
+        disabledReason={!isOwner ? t("Requiere permisos de propietario") : undefined}
+        loading={loading}
+        className="primary bg-[#4267b2] hover:bg-[#4267b2]/90 text-white w-full"
+        onClick={() => {
+          setError(null);
+          context.launchWhatsAppSignup(
+            onSuccess || (() => {}),
+            setLoading,
+            (msg) => setError(msg),
+          );
+        }}
+      >
+        {t("Continuar con Facebook")}
+      </Button>
+    </>
   );
 }
