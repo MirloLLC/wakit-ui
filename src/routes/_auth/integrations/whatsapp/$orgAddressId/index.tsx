@@ -37,9 +37,9 @@ function WhatsAppDetails() {
   const isCoexistence = flowType === "existing_phone_number";
 
   const flowTypeLabels: Record<string, string> = {
-    new_phone_number: t("Nuevo número de WhatsApp"),
-    existing_phone_number: t("Cuenta de WhatsApp Business existente"),
-    only_waba: t("Solo WABA"),
+    new_phone_number: "Cloud API",
+    existing_phone_number: "Coexistence",
+    only_waba: "Cloud API (WABA)",
   };
 
   const handleDisconnect = () => {
@@ -139,6 +139,11 @@ function WhatsAppDetails() {
             />
           </label>
 
+          {isCoexistence && (
+            <div className="bg-amber-100 text-amber-800 dark:bg-amber-900/30 dark:text-amber-200 text-[13px] p-3 rounded-lg">
+              {t("Los grupos de WhatsApp no están disponibles en modo Coexistence. Para usar grupos, conecta un número con Cloud API.")}
+            </div>
+          )}
         </form>
 
         {/* Webhooks per address */}

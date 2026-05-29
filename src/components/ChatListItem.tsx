@@ -15,7 +15,7 @@ import localizedFormat from "dayjs/plugin/localizedFormat";
 dayjs.extend(localizedFormat);
 import { TickContext } from "@/contexts/useTick";
 import { useTranslation } from "@/hooks/useTranslation";
-import { AtSign, Pause } from "lucide-react";
+import { AtSign, Pause, Users } from "lucide-react";
 
 import { useCurrentAgents, useCurrentAgent } from "@/queries/useAgents";
 import { useContactByAddress } from "@/queries/useContacts";
@@ -251,12 +251,15 @@ export default function ChatListItem({
             navigate({ to: "/conversations", hash: itemId });
           }}
         >
-          <div className="profile-picture pl-[10px] pr-[15px] flex items-center">
+          <div className="profile-picture pl-[10px] pr-[15px] flex items-center relative">
             <Avatar
               fallback={nameInitials(name || "?")}
               size={49}
               className="bg-accent text-accent-foreground border border-border text-[16px]"
             />
+            {conversation.group_address && (
+              <Users className="absolute bottom-0 right-[12px] w-[16px] h-[16px] text-primary bg-background rounded-full p-[1px]" />
+            )}
           </div>
           <div className="info flex flex-col justify-center grow min-w-0 pr-[15px]">
             {/* Upper row */}
