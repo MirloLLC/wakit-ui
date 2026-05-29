@@ -54,7 +54,7 @@ function AddMember() {
       if (result?.error) throw new Error(result.error);
       return result;
     },
-    onSuccess: (result) => {
+    onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: queryKeys.agents.all(activeOrgId!) });
       setFeedback({
         type: "success",
