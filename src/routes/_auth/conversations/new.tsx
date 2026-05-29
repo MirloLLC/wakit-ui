@@ -86,21 +86,29 @@ function NewChat() {
     <div className="flex flex-col h-full">
       <SectionHeader title={t("Nueva conversación")} />
 
-      {/* Mode tabs */}
+      {/* Mode tabs — same style as ChatFilter */}
       {whatsappAddresses && whatsappAddresses.length > 0 && (
-        <div className="px-[20px] pb-[8px] flex gap-[8px]">
+        <div className="px-[20px] pb-[5px] flex gap-3">
           <button
-            className={`text-[13px] px-[12px] py-[4px] rounded-full transition-colors ${mode === "contact" ? "bg-primary text-primary-foreground" : "bg-accent text-muted-foreground"}`}
+            className={
+              "text-[14px] px-[12px] py-[6px] rounded-full" +
+              (mode === "contact"
+                ? " text-foreground bg-primary/10 hover:bg-primary/20 border border-primary"
+                : " text-foreground bg-background hover:bg-accent border border-border")
+            }
             onClick={() => setMode("contact")}
           >
-            <MessageCircle className="w-[14px] h-[14px] inline mr-[4px]" />
             {t("Contacto")}
           </button>
           <button
-            className={`text-[13px] px-[12px] py-[4px] rounded-full transition-colors ${mode === "group" ? "bg-primary text-primary-foreground" : "bg-accent text-muted-foreground"}`}
+            className={
+              "text-[14px] px-[12px] py-[6px] rounded-full" +
+              (mode === "group"
+                ? " text-foreground bg-primary/10 hover:bg-primary/20 border border-primary"
+                : " text-foreground bg-background hover:bg-accent border border-border")
+            }
             onClick={() => setMode("group")}
           >
-            <Users className="w-[14px] h-[14px] inline mr-[4px]" />
             {t("Grupo")}
           </button>
         </div>
