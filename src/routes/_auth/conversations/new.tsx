@@ -1,6 +1,6 @@
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import useBoundStore from "@/stores/useBoundStore";
-import { Search, X, MessageSquarePlus, MessageCircle, Phone, Users } from "lucide-react";
+import { Search, X, MessageSquarePlus, MessageCircle, Phone } from "lucide-react";
 import { useTranslation } from "@/hooks/useTranslation";
 import { startConversation } from "@/utils/ConversationUtils";
 import { useState } from "react";
