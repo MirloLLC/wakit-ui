@@ -36,6 +36,7 @@ function NewChat() {
   const [groupName, setGroupName] = useState("");
   const [groupDescription, setGroupDescription] = useState("");
   const [groupResult, setGroupResult] = useState<{ invite_link?: string } | null>(null);
+  const [selectedGroupAddress, setSelectedGroupAddress] = useState("");
 
   // Cloud API addresses support groups; Coexistence does not
   const cloudApiAddresses = whatsappAddresses?.filter(
@@ -88,7 +89,7 @@ function NewChat() {
 
       {/* Mode tabs — same style as ChatFilter */}
       {whatsappAddresses && whatsappAddresses.length > 0 && (
-        <div className="px-[20px] pb-[5px] flex gap-3">
+        <div className="px-[20px] pt-[8px] pb-[12px] flex gap-3">
           <button
             className={
               "text-[14px] px-[12px] py-[6px] rounded-full" +
@@ -146,9 +147,10 @@ function NewChat() {
         <SectionBody>
           <form className="flex flex-col gap-[12px]" onSubmit={(e) => {
             e.preventDefault();
-            if (cloudApiAddresses?.[0]) {
-              createGroupMutation.mutate({ orgAddress: cloudApiAddresses[0].address });
-            }
+            const addr = cloudApiAddresses.length === 1
+              ? cloudApiAddresses[0].address
+              : selectedGroupAddress;
+            if (addr) createGroupMutation.mutate({ orgAddress: addr });
           }}>
             <label>
               <div className="label">{t("Nombre del grupo")}</div>
@@ -174,7 +176,30 @@ function NewChat() {
               />
             </label>
 
-            {cloudApiAddresses && cloudApiAddresses.length > 1 && (
+            {cloudApiAddresses.length > 1 && (
+              <label>
+                <div className="label">{t("Crear desde")}</div>
+                <select
+                  className="text"
+                  value={selectedGroupAddress}
+                  onChange={(e) => setSelectedGroupAddress(e.target.value)}
+                  required
+                >
+                  <option value="">{t("Seleccionar número")}</option>
+                  {cloudApiAddresses.map((wa) => {
+                    const name = (wa.extra as OrganizationAddressExtra)?.verified_name || "";
+                    const phone = (wa.extra as OrganizationAddressExtra)?.phone_number || wa.address;
+                    return (
+                      <option key={wa.address} value={wa.address}>
+                        {name} ({formatPhoneNumber(phone)})
+                      </option>
+                    );
+                  })}
+                </select>
+              </label>
+            )}
+
+            {cloudApiAddresses.length === 1 && (
               <div className="text-[12px] text-muted-foreground">
                 {t("Se creará desde")}: {(cloudApiAddresses[0].extra as OrganizationAddressExtra)?.verified_name || cloudApiAddresses[0].address}
               </div>
