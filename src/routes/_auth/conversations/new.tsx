@@ -87,7 +87,7 @@ function NewChat() {
       <SectionHeader title={t("Nueva conversación")} />
 
       {/* Mode tabs */}
-      {cloudApiAddresses && cloudApiAddresses.length > 0 && (
+      {whatsappAddresses && whatsappAddresses.length > 0 && (
         <div className="px-[20px] pb-[8px] flex gap-[8px]">
           <button
             className={`text-[13px] px-[12px] py-[4px] rounded-full transition-colors ${mode === "contact" ? "bg-primary text-primary-foreground" : "bg-accent text-muted-foreground"}`}
@@ -126,7 +126,15 @@ function NewChat() {
         </div>
       )}
 
-      {mode === "group" && (
+      {mode === "group" && (!cloudApiAddresses || cloudApiAddresses.length === 0) && (
+        <SectionBody>
+          <div className="bg-amber-100 text-amber-800 dark:bg-amber-900/30 dark:text-amber-200 text-[13px] p-3 rounded-lg">
+            {t("Los grupos de WhatsApp no están disponibles en modo Coexistence. Para usar grupos, conecta un número con Cloud API.")}
+          </div>
+        </SectionBody>
+      )}
+
+      {mode === "group" && cloudApiAddresses && cloudApiAddresses.length > 0 && (
         <SectionBody>
           <form className="flex flex-col gap-[12px]" onSubmit={(e) => {
             e.preventDefault();
