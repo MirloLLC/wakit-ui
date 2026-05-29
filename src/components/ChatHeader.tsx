@@ -2,7 +2,7 @@ import { nameInitials, formatPhoneNumber } from "@/utils/FormatUtils";
 import Avatar from "./Avatar";
 import useBoundStore from "@/stores/useBoundStore";
 import { useTranslation } from "@/hooks/useTranslation";
-import { ArrowLeft } from "lucide-react";
+import { ArrowLeft, Users } from "lucide-react";
 import { useNavigate } from "@tanstack/react-router";
 import { useContactByAddress } from "@/queries/useContacts";
 import { useContactAddress } from "@/queries/useContactsAddresses";
@@ -53,10 +53,14 @@ export default function Header() {
         />
       </div>
       <div className="info flex flex-col justify-center mr-[12px] truncate">
-        <div className="text-[16px] text-foreground truncate">{convName}</div>
+        <div className="text-[16px] text-foreground truncate flex items-center gap-[6px]">
+          {conversation?.group_address && <Users className="w-[16px] h-[16px] text-primary shrink-0" />}
+          {convName}
+        </div>
         <div className="text-[13px] text-muted-foreground truncate">
           {service === "local" && t("Contacto de prueba")}
-          {service === "whatsapp" && address && formatPhoneNumber(address)}
+          {service === "whatsapp" && !conversation?.group_address && address && formatPhoneNumber(address)}
+          {service === "whatsapp" && conversation?.group_address && t("Grupo")}
         </div>
       </div>
 
