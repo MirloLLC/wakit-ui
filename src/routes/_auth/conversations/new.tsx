@@ -1,6 +1,6 @@
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import useBoundStore from "@/stores/useBoundStore";
-import { Search, X, MessageSquarePlus, MessageCircle, Phone } from "lucide-react";
+import { Search, X, MessageSquarePlus, MessageCircle, Phone, Copy, Check, Send } from "lucide-react";
 import { useTranslation } from "@/hooks/useTranslation";
 import { startConversation } from "@/utils/ConversationUtils";
 import { useState } from "react";
@@ -35,8 +35,11 @@ function NewChat() {
   const [phoneNumber, setPhoneNumber] = useState("");
   const [groupName, setGroupName] = useState("");
   const [groupDescription, setGroupDescription] = useState("");
-  const [groupResult, setGroupResult] = useState<{ invite_link?: string } | null>(null);
+  const [groupResult, setGroupResult] = useState<{ invite_link?: string; group_id?: string } | null>(null);
   const [selectedGroupAddress, setSelectedGroupAddress] = useState("");
+  const [copied, setCopied] = useState(false);
+  const [invitePhone, setInvitePhone] = useState("");
+  const [inviteTemplateName, setInviteTemplateName] = useState("");
 
   // Cloud API addresses support groups; Coexistence does not
   const cloudApiAddresses = whatsappAddresses?.filter(
@@ -60,6 +63,29 @@ function NewChat() {
       return data;
     },
     onSuccess: (data) => setGroupResult(data),
+  });
+
+  const sendInviteMutation = useMutation({
+    mutationFn: async () => {
+      if (!groupResult?.group_id || !groupResult?.invite_link || !invitePhone || !inviteTemplateName) return;
+      const addr = cloudApiAddresses!.length === 1
+        ? cloudApiAddresses![0].address
+        : selectedGroupAddress;
+      const { data, error } = await supabase.functions.invoke("whatsapp-management/groups/invite", {
+        method: "POST",
+        body: {
+          organization_id: activeOrgId,
+          organization_address: addr,
+          group_id: groupResult.group_id,
+          invite_link: groupResult.invite_link,
+          recipient_phone: invitePhone.replace(/\D/g, ""),
+          template_name: inviteTemplateName,
+        },
+      });
+      if (error) throw new Error(error.message);
+      if (data?.error) throw new Error(data.error);
+      return data;
+    },
   });
 
   function sanitizePhoneNumber(phone: string): string {
@@ -211,20 +237,93 @@ function NewChat() {
               </div>
             )}
 
-            {groupResult && (
-              <div className="bg-primary/10 text-primary text-[13px] p-3 rounded-lg">
-                {t("Grupo creado. Comparte el link de invitación con los participantes.")}
-              </div>
+            {!groupResult && (
+              <button
+                type="submit"
+                className="primary w-full"
+                disabled={!groupName.trim() || createGroupMutation.isPending}
+              >
+                {createGroupMutation.isPending ? t("Creando...") : t("Crear grupo")}
+              </button>
             )}
-
-            <button
-              type="submit"
-              className="primary w-full"
-              disabled={!groupName.trim() || createGroupMutation.isPending}
-            >
-              {createGroupMutation.isPending ? t("Creando...") : t("Crear grupo")}
-            </button>
           </form>
+
+          {groupResult && (
+            <div className="flex flex-col gap-[12px] mt-[12px]">
+              <div className="bg-primary/10 text-primary text-[13px] p-3 rounded-lg">
+                {t("Grupo creado. Comparte el link de invitación con los participantes (máx. 8).")}
+              </div>
+
+              {/* Invite link with copy button */}
+              <label>
+                <div className="label">{t("Link de invitación")}</div>
+                <div className="flex gap-[8px]">
+                  <input
+                    type="text"
+                    className="text flex-1"
+                    value={groupResult.invite_link || ""}
+                    readOnly
+                  />
+                  <button
+                    type="button"
+                    className="p-[8px] rounded-lg border border-border hover:bg-accent"
+                    onClick={() => {
+                      navigator.clipboard.writeText(groupResult.invite_link || "");
+                      setCopied(true);
+                      setTimeout(() => setCopied(false), 2000);
+                    }}
+                  >
+                    {copied
+                      ? <Check className="w-[16px] h-[16px] text-primary" />
+                      : <Copy className="w-[16px] h-[16px] text-muted-foreground" />}
+                  </button>
+                </div>
+              </label>
+
+              {/* Send invite via template */}
+              <div className="border-t border-border pt-[12px]">
+                <div className="label mb-[8px]">{t("Enviar invitación por WhatsApp")}</div>
+                <div className="flex flex-col gap-[8px]">
+                  <input
+                    type="text"
+                    className="text"
+                    placeholder={t("Número del contacto")}
+                    value={invitePhone}
+                    onChange={(e) => setInvitePhone(e.target.value)}
+                  />
+                  <input
+                    type="text"
+                    className="text"
+                    placeholder={t("Nombre del template")}
+                    value={inviteTemplateName}
+                    onChange={(e) => setInviteTemplateName(e.target.value)}
+                  />
+
+                  {sendInviteMutation.error && (
+                    <div className="text-[13px] text-destructive">
+                      {(sendInviteMutation.error as Error).message}
+                    </div>
+                  )}
+
+                  {sendInviteMutation.isSuccess && (
+                    <div className="text-[13px] text-primary">
+                      {t("Invitación enviada")}
+                    </div>
+                  )}
+
+                  <button
+                    type="button"
+                    className="primary w-full flex items-center justify-center gap-[6px]"
+                    disabled={!invitePhone.trim() || !inviteTemplateName.trim() || sendInviteMutation.isPending}
+                    onClick={() => sendInviteMutation.mutate()}
+                  >
+                    <Send className="w-[14px] h-[14px]" />
+                    {sendInviteMutation.isPending ? t("Enviando...") : t("Enviar invitación")}
+                  </button>
+                </div>
+              </div>
+            </div>
+          )}
         </SectionBody>
       )}
 
